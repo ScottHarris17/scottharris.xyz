@@ -4,6 +4,14 @@ body {
     margin-top: 10px;
 }
 
+/* Reduce margins for small screens (mobile) */
+@media (max-width: 800px) {
+    body {
+        margin-left: 3%;
+        margin-right: 3%;
+    }
+}
+
 nav {
     display: flex;
     justify-content: center;
