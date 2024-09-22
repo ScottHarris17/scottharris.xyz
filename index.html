@@ -1,0 +1,395 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+  <!-- Required meta tags -->
+  <meta charset="utf-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1, shrink-to-fit=no">
+
+  <!-- Bootstrap CSS -->
+  <link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+    integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+
+  <!-- Custom CSS -->
+  <link rel="stylesheet" href="homestyle.css">
+
+  <!-- jQuery-->
+  <script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+
+  <!--Favicon-->
+  <link rel="shortcut icon" type="image/png" href="favicon.png" />
+
+  <title>Scott Harris Home</title>
+
+  <!--settings-->
+  <base target="_blank">
+
+
+</head>
+
+<body onload="loadJSFunc()">
+
+
+  <!-- Full-Width "Navbar" -->
+  <nav class="navbar navbar-light navbar-brand mb-0 h1">
+      <h1>Scott C. Harris, PhD</h1>
+  </nav>
+
+
+  <div class="container-fluid">
+
+    <!-- Introduction -->
+    <div class="container" style="margin-top:20px">
+      <div class="row">
+        <div class="col">
+          <p style="text-align: justify;">
+            Hi, I'm Scott - A computational neuroscientist with a particular affinity for vision science.
+            Professionally, I am building diagnostic technologies for early detection of neurologic diseases like
+            Alzheimer's and Parkinson's. In my spare time, I enjoy being an amateur astronomer, playing with dogs, and
+            riding around on my Vespa. This site contains an archive of my professional and personal works. I built it
+            entirely from scratch using mainly vanilla JS and some helpful Bootstrap features. Feel free to look around
+            and send me an email at my extremely old, but highly functional address: <a
+              href="mailto:mrscottharris@aol.com">mrscottharris@aol.com</a>
+          </p>
+        </div>
+
+        <div class="col-md">
+          <div class="media" style="justify-content: center">
+            <img src="./media/Headshot_SH.jpg" style="height: 220px; border-radius: 8px; margin-top: 5px;"
+              alt="My Picture Was Supposed to Be Here :(">
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- CV Card-->
+    <div id="CV" class="container d-flex justify-content-center" style="margin-top: 0vh;">
+      <div class="card" style="width: 400px;">
+        <a class="CVFile"><img src="./media/cvIcon.png" class="card-img-top" alt="My CV"
+            style="width: 30%; height: auto; display: block; margin-left: auto; margin-right: auto;"> </a>
+        <div class="card-body">
+          <h5 class="card-title">Full Academic CV</h5>
+          <p class="card-text">Download my complete academic CV
+            </br>
+            <span style="color:rgb(145, 145, 145)">Updated September 2024</span>
+          </p>
+          <a class="btn btn-primary CVFile" title="...my resume, not the computer vision library">Open CV</a>
+        </div>
+      </div>
+    </div>
+    <br />
+
+    <hr />
+    <!-- Portfolio Links -->
+    <div class="container portfolioLinks">
+      <h3>Online Portfolios</h3>
+      <div class="row">
+        <div class="col d-flex align-items-center justify-content-center">
+          <a class="linkedIn"><img src="./media/linkedInIcon.png"></a>
+        </div>
+        <div class="col d-flex align-items-center justify-content-center">
+          <a class="github"><img src="./media/githubIcon.png"></a>
+        </div>
+        <div class="col d-flex align-items-center justify-content-center">
+          <a class="scholar"><img src="./media/googleScholarIcon.png"></a>
+        </div>
+        <div class="col d-flex align-items-center justify-content-center">
+          <a class="medium"><img src="./media/mediumIcon.png"></a>
+        </div>
+      </div>
+    </div>
+    <br />
+    <br />
+
+    <hr />
+    <!--List of Projects-->
+    <div id="projects" class="container">
+      <h3>Projects</h3>
+      <p style="color:rgb(158, 158, 158)">Click on each section to view select projects</p>
+
+      <!-- Science -->
+      <div class="card">
+        <div class="card-header" onclick="contentSlider('scienceSection')">
+          <button class="btn">
+            <h5 class="projectSectionHeader">Science</h5>
+          </button>
+        </div>
+
+        <div id="scienceSection" style="display:none">
+          <div class="card-body">
+            <div class="container">
+
+              <!--eLife Paper-->
+              <div class="card projectCard">
+                <a class="eLifePaper"><img src="./media/eLifePaper.png" class="card-img-top" alt="eLife Paper"
+                    style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Graduate dissertation work on biological image stabilization</h4>
+                  <a class="btn btn-primary eLifePaper">Read the Paper</a>
+                </div>
+              </div>
+
+              <!--Copenhagen Award-->
+              <div class="card projectCard">
+                <div style="text-align: center;">
+                  <iframe width="70%" height="140%" src="https://youtube.com/embed/KDAUHv1MTpY?si=s7v8P0eBcyF9dZsx">
+                  </iframe>
+                </div>
+                <div class="card-body">
+                  <h4 class="card-title">2024 Copenhagen Award for Best Research in Vision Science</h4>
+                  <p class="card-text">UCSF Department of Ophthalmology. May 24, 2024</p>
+                </div>
+              </div>
+
+              <!--Glaucoma Paper-->
+              <div class="card projectCard">
+                <a class="glaucomaPaper"><img src="./media/glaucomaPaper.png" class="card-img-top"
+                    alt="Glaucoma Paper"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Circuit changes in a mouse model of glaucoma</h4>
+                  <a class="btn btn-primary glaucomaPaper">Read the Paper</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Software-->
+      <div class="card">
+        <div class="card-header"  onclick="contentSlider('softwareSection')">
+          <button class="btn"">
+            <h5 class="projectSectionHeader">Software</h5>
+          </button>
+        </div>
+
+        <div id="softwareSection" style="display:none">
+          <div class="card-body">
+            <div class="container">
+
+              <!--Bassoon-->
+              <div class="card projectCard">
+                <a class="bassoonRepo"><img src="./media/bassoon.png" class="card-img-top"
+                    alt="Electrophysiology Pipeline" style="width:50%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Bassoon</h4>
+                  <p class="card-text">No-code python software for development and deployment of psychophysics stimuli
+                    with millisecond precision</p>
+                  <a class="btn btn-primary bassoonRepo">Open Repo</a>
+                  <a class="btn btn-primary bassoonDocs">Open Docs</a>
+                </div>
+              </div>
+
+              <!--Electrophysiology Pipeline-->
+              <div class="card projectCard">
+                <a class="electrophysiologyPipeline"><img src="./media/electrophysiologyPipeline.png"
+                    class="card-img-top" alt="Electrophysiology Pipeline" style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Electrophysiology Pipeline</h4>
+                  <p class="card-text">Full suite of analysis and visualization tools for electrophysiological data</p>
+                  <a class="btn btn-primary electrophysiologyPipeline">Open Repo</a>
+                </div>
+              </div>
+
+              <!--Calibrate Light-->
+              <div class="card projectCard">
+                <a class="calibrateLight"><img src="./media/calibrateLight.jpg" class="card-img-top"
+                    alt="Calibrate Light" style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Calibrate Light</h4>
+                  <p class="card-text">Interactive GUI to calculate photoisomerization rates for rodent opsins
+                  </p>
+                  <a class="btn btn-primary calibrateLight">Open Repo</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+
+      <!--Writing-->
+      <div class="card">
+        <div class="card-header" onclick="contentSlider('writingSection')">
+          <button class="btn">
+            <h5 class="projectSectionHeader">Writing</h5>
+          </button>
+        </div>
+
+        <div id="writingSection" style="display:none">
+          <div class="card-body">
+            <div class="container">
+
+              <!--Confronting Consciousness-->
+              <div class="card projectCard">
+                <a class="confrontingConsciousness"><img src="./media/confrontingConsciousness.jpg" class="card-img-top"
+                    alt="Confronting Consciousness" style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Confronting Consciousness</h4>
+                  <p class="card-text">Perspective on the current state of neuroscience</p>
+                  <a class="btn btn-primary confrontingConsciousness">Read Article</a>
+                </div>
+              </div>
+
+              <!--Finding Free Will-->
+              <div class="card projectCard">
+                <a class="findingFreewill"><img src="./media/findingFreewill.jpg" class="card-img-top"
+                    alt="Finding Freewill" style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Finding Free Will</h4>
+                  <p class="card-text">The case for free will in a deterministic universe</p>
+                  <a class="btn btn-primary findingFreewill">Read Article</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+
+      <!--Miscellaneous-->
+      <div class="card">
+        <div class="card-header" onclick="contentSlider('miscellaneousSection')">
+          <button class="btn">
+            <h5 class="projectSectionHeader">Miscellaneous</h5>
+          </button>
+        </div>
+
+        <div id="miscellaneousSection" style="display:none">
+          <div class="card-body">
+            <div class="container">
+
+              <!--Viral Spread Simulator-->
+              <div class="card projectCard">
+                <a class="viralSpread"><img src="./media/viralSpread.png" class="card-img-top" alt="Viral Spread"
+                    style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Viral Spread Simulator</h4>
+                  <p class="card-text">Simulate the spread of a virus through a population (built during the Covid-19
+                    era
+                    and just for fun)</p>
+                  <a class="btn btn-primary viralSpread">Launch Simulator</a>
+                </div>
+              </div>
+
+              <!--Quale-->
+              <div class="card projectCard">
+                <a class="qualeDemo"><img src="./media/quale.png" class="card-img-top" alt="Quale"
+                    style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Visual Prosthetic Device</h4>
+                  <p class="card-text">A homemade visual prosthetic for the blind that converts live video into unique
+                    audioscapes</p>
+                  <a class="btn btn-primary qualeDemo">Watch Demo Video</a>
+                  <a class="btn btn-primary qualePressRelease">Press Release</a>
+                </div>
+              </div>
+
+            </div>
+          </div>
+        </div>
+      </div>
+    </div>
+
+  </div> <!-- Close the one fluid container that wraps the whole body-->
+  <script>
+
+    //Settings:
+    let settings = {
+      colorPallete: ['#FDF9FF', '#F9FDFF', '#FAFFF3', '#FFFCF5', '#FAFFFA'],
+    };
+    //
+
+    function loadJSFunc() {
+      // Runs when the body loads to call all other functions that need to be called on loading
+      setURLs() // set link URLs
+      setProjectCardColors() //randomizes background colors of project cards
+    }
+
+    function setURLs() {
+      // sets URLs for a lot of the <a/> elements. This is helpful just to have all the URLs in one place if you want to change them. Could consider moving to a json file or something as well.
+
+      var URLList = { // list of URLs. Key values must correspond to DOM IDs
+        linkedIn: "https://www.linkedin.com/in/scott-harris-phd-808b19b2/",
+        github: "https://github.com/scottharris17",
+        scholar: "https://scholar.google.com/citations?user=-0CFW9oAAAAJ&hl=en&oi=ao",
+        medium: "https://medium.com/@scott.harris17",
+        CVFile: "./media/CV_ScottHarris.pdf",
+        eLifePaper: "https://elifesciences.org/articles/81780",
+        glaucomaPaper: "./media/GlaucomaPaper.pdf",
+        bassoonRepo: "https://github.com/scottharris17/bassoon",
+        bassoonDocs: "https://scottharris17.github.io/Bassoon/",
+        electrophysiologyPipeline: "https://github.com/ScottHarris17/ElectrophysiologyPipeline",
+        calibrateLight: "https://github.com/ScottHarris17/CalibrateLight",
+        confrontingConsciousness: "https://medium.com/swlh/confronting-consciousness-8268fc2ff729",
+        findingFreewill: "https://medium.com/@scott.harris17/finding-free-will-dd565e0135d4",
+        viralSpread: "./apps/viralspread/viralSpread.html",
+        qualeDemo: "https://www.youtube.com/shorts/k8tYTOxCEgs",
+        qualePressRelease: "https://innovation.ucsf.edu/news/see-your-ears"
+      }
+
+      // loop through and set each URL
+      for (const [key, value] of Object.entries(URLList)) {
+        let el = document.querySelectorAll('.' + key);
+        el.forEach((el_i) => {
+          el_i.setAttribute("href", URLList[key]);
+        })
+      }
+    }
+
+    function setProjectCardColors() { //set the card colors according the color pallete in settings
+
+      let shuffleArray = (array) => {
+        let shuffled = [];
+        for (let i = 0; i < array.length; i++) {
+          let index = Math.floor(Math.random() * array.length);
+
+          while (shuffled.includes(array[index])) {
+              index = Math.floor(Math.random() * array.length);
+          }
+
+          shuffled.push(array[index])
+        }
+        return shuffled
+      }
+
+      let numColors = settings['colorPallete'].length;
+      let colorOrder = [];
+      $('.projectCard').each(function (index) {
+        let colorNum = index % numColors;
+        
+        if(colorNum === 0){//shuffle every time you complete once through the pallete
+          colorOrder = shuffleArray(settings['colorPallete'])
+        }
+        $(this).css('background-color', colorOrder[colorNum])
+      });
+    }
+
+
+    let contentStates = { //contentStates keeps track of which project cards are visible and which are not. The key value corresponds to an ID for one of the sections above. The value is either a 1 or a 0. 0 Corresponds to the section being closed (not visible), 1 corresponds to it being visible. contentSlider() will manipulate the values between 0 and 1 according to the user's activity.
+      scienceSection: 0,
+      softwareSection: 0,
+      writingSection: 0,
+      miscellaneousSection: 0,
+    }
+    function contentSlider(clickedSection) {
+      let thisContent = contentStates[clickedSection];
+      let idString = "#" + clickedSection;
+      if (thisContent === 0) {
+        $(idString).slideDown("slow");
+        contentStates[clickedSection] = 1;
+      }
+      else {
+        $(idString).slideUp("slow");
+        contentStates[clickedSection] = 0;
+      }
+    }
+
+  </script>
+
+</body>
+
+
+</html>

@@ -1,0 +1,79 @@
+body {
+    margin-left: 20%;
+    margin-right: 20%;
+    margin-top: 10px;
+}
+
+nav {
+    display: flex;
+    justify-content: center;
+    align-items: center; /* Vertically center the text */
+    background-image: linear-gradient(to right, #256845, #3c9a69);
+    padding: 20px 0;
+    width: 100vw;
+    margin-left: calc(-50vw + 50%);
+    margin-right: calc(-50vw + 50%);
+    margin-top: 0;
+    box-shadow: 0 4px 10px rgba(0, 0, 0, 0.2);
+    text-align: center; /* Center text inside the navbar */
+}
+
+nav h1 {
+    font-size: 2.8rem;
+    font-weight: bold;
+    letter-spacing: 1px;
+    color: #fff; 
+    text-shadow: 2px 2px 4px rgba(0, 0, 0, 0.3);
+}
+
+a:hover { 
+    text-decoration: none; 
+  } 
+  
+
+.card {
+    margin-top: 20px;
+    margin-bottom: 20px;
+}
+
+#projects .card-header:hover{
+    cursor: pointer;
+}
+
+.projectSectionHeader{
+    color:rgb(0, 77, 0);
+}
+
+
+.card .btn:hover {
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out
+}
+
+.portfolioLinks .col img {
+    height: 70px;
+    width: 70px;
+}
+
+.portfolioLinks a:hover {
+    transform: scale(1.1);
+    transition: all 0.2s ease-in-out
+}
+
+.projectCard {
+    box-shadow: 3px 3px rgb(161, 161, 161);
+}
+
+.projectCard img{
+    display: block;
+    margin-left: auto;
+    margin-right: auto;
+    width:60%;
+    height:auto
+}
+
+.projectCard .card-body{
+    text-align: left;
+}
+
+

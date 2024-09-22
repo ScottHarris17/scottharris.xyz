@@ -1,0 +1,385 @@
+
+<!DOCTYPE html>
+<html lang="en-US">
+<head><meta charset="utf-8">
+	<title>Viral Simulator</title>
+	<!-- chart.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script><script src="https://code.jquery.com/jquery-3.3.1.min.js"></script><script src="./myChart.js"></script><!--bootstrap stylesheet-->
+	<link crossorigin="anonymous" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css" integrity="sha384-ggOyR0iXCbMQv3Xipma34MD+dH/1fQ784/j6cY/iJTQUOhcWr7x9JvoRxT2MZw1T" rel="stylesheet" />
+<script>
+Chart.defaults.scale.gridLines.display = false;
+function intChecker(thisObject){
+  var inputVal = document.getElementById(thisObject.id);
+  inputVal = Math.round(inputVal.value)
+  maximum = parseInt(thisObject.max);
+  minimum = parseInt(thisObject.min);
+  if(inputVal > maximum || inputVal < minimum){
+    document.getElementById(thisObject.id).value = null;
+  }
+  else{
+    document.getElementById(thisObject.id).value = inputVal;
+  }
+}
+
+class person {
+  constructor(idNumber) {
+    this.idNumber = idNumber;
+    this.status = 0;
+    this.statusTomorrow = 0;
+  }
+  getsSick(dayNum) {
+    this.statusTomorrow = 1;
+    this.dayInfected = dayNum;
+  }
+}
+
+function shuffle(array) {
+  var currentIndex = array.length, temporaryValue, randomIndex;
+
+  // While there remain elements to shuffle...
+  while (0 !== currentIndex) {
+
+    // Pick a remaining element...
+    randomIndex = Math.floor(Math.random() * currentIndex);
+    currentIndex -= 1;
+
+    // And swap it with the current element.
+    temporaryValue = array[currentIndex];
+    array[currentIndex] = array[randomIndex];
+    array[randomIndex] = temporaryValue;
+  }
+
+  return array;
+}
+
+function randn_bm(min, max, skew) {
+    let u = 0, v = 0;
+    while(u === 0) u = Math.random(); //Converting [0,1) to (0,1)
+    while(v === 0) v = Math.random();
+    let num = Math.sqrt( -2.0 * Math.log( u ) ) * Math.cos( 2.0 * Math.PI * v );
+
+    num = num / 10.0 + 0.5; // Translate to 0 -> 1
+    if (num > 1 || num < 0) num = randn_bm(min, max, skew); // resample between 0 and 1 if out of range
+    num = Math.pow(num, skew); // Skew
+    num *= max - min; // Stretch to fill range
+    num += min; // offset to min
+    return num;
+}
+
+function runSimulation(){
+  console.log('Running Simulation')
+
+  const days = 90;
+  var numPeople = document.getElementById('populationSize').value
+  var interactionsPerDay = document.getElementById('interactionsPerDay').value
+  var infectedAtStart = document.getElementById('infectedAtStart').value
+  var infectionProbability = document.getElementById('infectionProbability').value
+  var daysContagious = document.getElementById('daysContagious').value
+
+  daysContagious = parseInt(daysContagious);
+
+  document.getElementById('missingFieldError').style.visibility = 'hidden';
+  document.getElementById('infectedAtStartError').style.visibility = 'hidden';
+  if(numPeople === "" || interactionsPerDay === "" || infectedAtStart === "" || infectedAtStart === "" || infectionProbability === "" || daysContagious === ""){
+    document.getElementById('missingFieldError').style.visibility = 'visible';
+    document.getElementById('loading').style.display='none';
+    return
+  }
+
+  var percentInfectedAtStart = infectedAtStart/numPeople;
+  if(percentInfectedAtStart > 1){
+    document.getElementById('infectedAtStartError').style.visibility = 'visible';
+    document.getElementById('loading').style.display='none';
+    return
+  }
+
+  //initialize the population
+  var peopleArray = [];
+  var personDict = {};
+  for(i = 0; i < numPeople; i++){
+    personDict[i] = new person(i);
+    if(i < infectedAtStart){
+      personDict[i].status = 1;
+      personDict[i].getsSick(0);
+    }
+    //initialize peopleArray
+    peopleArray.push(i)
+  }
+
+
+  //Initialize data stores
+  var numSickByDay = [];
+  var numHealthyByDay = [];
+  var numRecoveredByDay = [];
+  var numInfectionsByDay = [];
+
+  var numSickToday = 0;
+  var numHealthyToday = 0;
+  var numRecoveredToday = 0;
+  var numInfectedToday = 0;
+
+
+  //Simulate viral spread
+  var socialSpeed = interactionsPerDay/numPeople;
+
+  for(dayNum = 0; dayNum < days; dayNum++){
+    //console.log(dayNum)
+
+    //reinitialize counters
+    numSickToday = 0;
+    numHealthyToday = 0;
+    numRecoveredToday = 0;
+    numInfectedToday = 0;
+
+    shuffle(peopleArray);
+    var daysInteractionList = peopleArray.concat(peopleArray);
+
+    //status update
+    for(personID = 0; personID < numPeople; personID++){
+      personDict[personID].status = personDict[personID].statusTomorrow;
+    }
+
+    for(personID = 0; personID < numPeople; personID++){
+
+      if(personDict[personID].status === 1){
+        numSickToday++;
+
+        if((personDict[personID].dayInfected + daysContagious) === dayNum){
+          personDict[personID].statusTomorrow = 2;
+        }
+
+        var socialNoise = randn_bm(-3, 3, 1) * 0.15 * socialSpeed;
+        var numPeopleToSee = Math.round(socialSpeed * (numPeople-1) + socialNoise)
+
+        var startIndex = daysInteractionList.indexOf(personID);
+        var peopleSeen = daysInteractionList.slice(startIndex, startIndex + numPeopleToSee + 1)
+
+        for(personSeen = 0; personSeen < numPeopleToSee; personSeen++){
+          var seen_id = peopleSeen[personSeen];
+          var seen_status = personDict[seen_id].status;
+
+          if(seen_status === 0 & Math.random() <= infectionProbability/100){
+            personDict[seen_id].statusTomorrow = 1;
+            personDict[seen_id].dayInfected = dayNum;
+            personDict[seen_id].dayToRecover = dayNum + daysContagious;
+            numInfectedToday++;
+          }
+        }
+      } else if(personDict[personID].status === 0){
+          numHealthyToday++;
+      } else if(personDict[personID].status === 2){
+          numRecoveredToday++;
+      }
+    }
+
+    numSickByDay.push(numSickToday);
+    numHealthyByDay.push(numHealthyToday);
+    numRecoveredByDay.push(numRecoveredToday);
+    numInfectionsByDay.push(numInfectedToday);
+  }
+
+
+  var dayLabels = [1];
+  for(i = 0; i<days; i++){
+    var lbl = i + 1;
+    if(lbl%5===0){
+      dayLabels.push(lbl);
+    }
+    else {
+    dayLabels.push("");
+    }
+  }
+
+
+
+  //plot data
+  try{
+    linePlot.destroy();
+  }
+  catch(err){
+
+  }
+
+  var ctx = document.getElementById('linePlotGraphic').getContext('2d');
+  var linePlot = new Chart(document.getElementById("linePlotGraphic"), {
+  type: 'line',
+  data: {
+    labels: dayLabels,
+    datasets: [{
+        data: numHealthyByDay,
+        label: "Healthy",
+        borderColor: "#3e95cd",
+        fill: false
+      }, {
+        data: numSickByDay,
+        label: "Sick",
+        borderColor: "#8e5ea2",
+        fill: false
+      }, {
+        data: numRecoveredByDay,
+        label: "Recovered",
+        borderColor: "#3cba9f",
+        fill: false
+      }
+    ]
+  },
+  options: {
+
+    title: {
+      display: true,
+      text: 'Population Health Status',
+      fontSize: 25
+    },
+    scales:{
+      yAxes:[{
+        scaleLabel:{
+          display:true,
+          labelString:'number of people',
+          fontSize: 18
+        }
+      }],
+      xAxes:[{
+        scaleLabel:{
+          display: true,
+          labelString:'day',
+          fontSize:18,
+          autoSkip: true,
+          maxTicksLimit: 20
+        }
+      }]
+    }
+
+  }
+});
+
+try{
+  barPlot.destroy();
+}
+catch(err){
+
+}
+
+var ctx = document.getElementById('barPlotGraphic').getContext('2d');
+var barPlot = new Chart(document.getElementById("barPlotGraphic"), {
+  type:'bar',
+  data: {
+    labels: dayLabels,
+    datasets:[{
+      data: numInfectionsByDay,
+      label:"New Infections",
+      backgroundColor:"rgba(0, 83, 134, 1)"
+    }]
+  },
+
+  options:{
+    title:{
+      display:true,
+      text:'New Infections By Day',
+      fontSize: 25
+    },
+    scales: {
+      yAxes:[{
+        scaleLabel:{
+          display: true,
+          labelString:"count",
+          fontSize: 18
+        }
+      }],
+
+      xAxes:[{
+        scaleLabel:{
+          display: true,
+          labelString:"day",
+          fontSize: 18
+        }
+      }]
+    }
+  }
+
+});
+
+var outputData = new Object();
+outputData.numHealthyByDay = numHealthyByDay;
+outputData.numSickByDay = numSickByDay;
+outputData.numInfectionsByDay = numInfectionsByDay;
+outputData.numRecoveredByDay = numRecoveredByDay;
+outputData.personDict = personDict;
+
+document.getElementById('loading').style.display='none';
+document.getElementById('results').style.display = 'inline';
+return outputData
+}
+</script>
+</head>
+
+<body style="margin-left:10%; margin-right:10%; background:rgb(235, 242, 241)">
+<div class="introduction">
+<h1 style="text-align:center">Viral Spread Simulator</h1>
+
+<p><em><strong>**DISCLAIMER&nbsp;</strong>This is an archive of a simulator that I built in March 2020 as an interesting way to estimate the time course of viral spread in an idealized population. It is fun to experiment with, but should not be used as a tool to guide any real-world decisions or policies.</em></p>
+
+<p>Wondering how long you&#39;ll have to stay indoors for the Covid-19 quarantine? Get an idea by simulating viral infection patterns within a community over 90 days.</p>
+
+<p>Enter the parameters of your population into each of the boxes below, then press &quot;Run Simulation&quot; for interactive charts. Results vary based on random social interactions within your population. Larger population sizes slow down the simulation rate (for fast simulations, use population sizes of ~10,000 or less)</p>
+</div>
+
+<p></p>
+
+<form style="border:solid; padding:10px">
+<div><label for="population-size"><b>Population Size</b><br />
+Number of people in the population (between 1 and 99999, simulation rate scales with ~n^2)</label><br />
+<input id="populationSize" max="99999" min="1" name="population-size" value = "10000" onfocusout="intChecker(this)" type="number" /></div>
+
+<p></p>
+
+<div><label for="interactions-per-day"><b>Interactions Per Day</b><br />
+Average number of other people that each person interacts with per day (between 0 and 100)</label><br />
+<input id="interactionsPerDay" max="100" min="0" value="8" name="interactions-per-day" onfocusout="intChecker(this)" type="number" /></div>
+
+<p></p>
+
+<div><label for="infected-at-start"><b>Infected At Start</b><br />
+Number of people infected at the beginning of the outbreak</label><br />
+<input id="infectedAtStart" max="99999" min="0" value="6" name="infected-at-start" onfocusout="intChecker(this)" type="number" /></div>
+
+<p></p>
+
+<div><label for="infection-probability"><b>Infection probability</b><br />
+Percent chance that someone will be infected if they interact with a sick person (between 0 and 100)</label><br />
+<input id="infectionProbability" max="100" min="0" value="10" name="infection-probability" onfocusout="intChecker(this)" type="number" /></div>
+&nbsp;
+
+<div><label for="days-contagious"><b>Days Contagious</b><br />
+Number of days that someone is contagious after getting sick</label><br />
+<input id="daysContagious" max="90" min="0" value="5" name="days-contagious" onfocusout="intChecker(this)" type="number" /></div>
+<br />
+<button id="submitButton" onclick="document.getElementById('loading').style.display = 'inline'; setTimeout(function(){a = runSimulation()}, 200)" type="button">Run Simulation</button><span class="loading" id="loading" style="display:none">Simulation in progress, please wait...</span></form>
+
+<p></p>
+
+<div class="error-messages">
+<div id="missingFieldError" style="visibility:hidden; color:red">Please fill out all fields before running the simulation</div>
+
+<div id="infectedAtStartError" style="visibility:hidden; color:red">Number of people infected on day 0 cannot be greater than the population size</div>
+</div>
+
+<div class="results" id="results" style="display:none; text-align:center">
+<h1>Simulation Results</h1>
+Your simulation is complete! Click on the legend icons to add or remove data from each chart. On each day, every person in your population is either healthy (not yet infected and not contagious), sick (infected and contagious), or recovered (already infected, not contagious, and immune from becoming contagious again). If there are bugs in the graphics, refresh the page and run the simulation again.</div>
+
+<p></p>
+
+<p></p>
+
+<div class="graphics"><canvas height="150" id="linePlotGraphic" width="400"></canvas><br />
+<canvas id="barPlotGraphic"></canvas><br />
+&nbsp;</div>
+
+<p></p>
+
+<p></p>
+
+<div>For educational purposes only</div>
+
+<footer>&copy;Scott Harris, March 2020 <a href="mailto:scott.harris@ucsf.edu">scott.harris@ucsf.edu</a> <span style="padding-left:100px">Graphics made possible by <a href="https://www.chartjs.org" target="_blank">Chart.js</a></span></footer>
+</body>
+</html>
