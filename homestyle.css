@@ -4,14 +4,6 @@ body {
     margin-top: 10px;
 }
 
-/* Reduce margins for small screens (mobile) */
-@media (max-width: 800px) {
-    body {
-        margin-left: 0;
-        margin-right: 0;
-    }
-}
-
 nav {
     display: flex;
     justify-content: center;
@@ -36,12 +28,6 @@ nav h1 {
     white-space: nowrap; /* Prevents text from breaking into multiple lines */
 }
 
-/* Responsive design: reduce font size for smaller screens */
-@media (max-width: 800px) {
-    nav h1 {
-        font-size: 1.8rem; /* Smaller font size on mobile */
-    }
-}
 
 a:hover { 
     text-decoration: none; 
@@ -94,3 +80,19 @@ a:hover {
 }
 
 
+/* Responsive design for smaller screens (mobile) */
+@media (max-width: 800px) {
+    body {
+        margin-left: 0;
+        margin-right: 0;
+    }
+
+    nav h1 {
+        font-size: 1.8rem; /* Smaller font size on mobile */
+    }
+
+    .card-body .btn {
+        margin-bottom: 3px;
+    }
+
+}
