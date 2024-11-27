@@ -18,7 +18,6 @@
 			min-width: 200px;
 			max-width: 600px;
 			background-color: rgb(252, 255, 244);
-			margin-top:5%;
 		}
 
 		.formContainer label{
@@ -42,13 +41,13 @@
 <body>
 
 	<!-- Full-Width "Navbar" -->
-	<a href="https://www.scottharris.xyz">
+	<a href="../../index.html">
 		<nav class="navbar navbar-light navbar-brand mb-0 h1">
 			<h1>Scott C. Harris, PhD</h1>
 		</nav>
 	</a>
 
-	
+	<p style="margin-top:10px">This widget calculates compound interest using the values entered in the form below. Compounding occurs on a monthly basis.</p>
 	<div class="contianer formContainer">
 		
 		<form id="interestRateCalculator" style="position:relative; margin-left: 5%">
@@ -104,24 +103,32 @@
 		</form>
 	</div>
 	<div class="results section">
-		<p>Your <b>pre-tax</b> return is: <span id="preTaxReturn" style="font-weight: bold;"></span></p>
-		<p>Your <b>post-tax</b> return is: <span id="postTaxReturn" style="font-weight:bold;"></span></p>
-		<p>Your <b>net</b> return is: <span id="netReturn" style="font-weight:bold;"></span></p></p>
+		<p>Your <b>pre-tax</b> balance is: <span id="preTaxReturn" style="font-weight: bold;"></span></p>
+		<p>Your <b>post-tax</b> balance is: <span id="postTaxReturn" style="font-weight:bold;"></span></p>
+		<p>Your <b>net ROI</b> is: <span id="netReturn" style="font-weight:bold;"></span></p></p>
 	</div>
+
+	<p style="font-size: small;">*Accuracy of results is not guaranteed. This calculator is intended for recreational use only and should not be used to make real-world financial decisions.</p>
+
 	<script>
 		function intChecker(val){
 
 		}
 		function calculateInterest(){
-			let deposit = document.getElementById("deposit").value;
-			let contribution = document.getElementById("contribution").value;
-			let term = document.getElementById("term").value;
-			let rate = document.getElementById("rate").value;
-			let tax = document.getElementById("tax").value;
-
-			let interest = deposit*(1+0.01*rate)**term; //compound interest formula
-			let postTaxReturn = interest *(1-tax*0.01);
-			let interestString = formatNumToDollarString(interest);
+			let deposit = parseFloat(document.getElementById("deposit").value);
+			let contribution = parseFloat(document.getElementById("contribution").value);
+			let term = parseFloat(document.getElementById("term").value);
+			let rate = parseFloat(document.getElementById("rate").value);
+			let tax = parseFloat(document.getElementById("tax").value);
+			
+			let numMonths = Math.round(term*12);
+			let balance = deposit;
+			for(let i = 0; i<numMonths; i++){
+				balance = balance + contribution;
+				balance = balance + balance*0.01*rate/12;
+			}
+			let postTaxReturn = balance - (balance-deposit-contribution*numMonths)*(tax*0.01);
+			let interestString = formatNumToDollarString(balance);
 			let postTaxString = formatNumToDollarString(postTaxReturn);
 			let netReturnString = formatNumToDollarString(postTaxReturn - deposit);
 			$('#preTaxReturn').html(`$${interestString}`)
