@@ -287,6 +287,17 @@
                 </div>
               </div>
 
+               <!--Interest Calculator-->
+               <div class="card projectCard">
+                <a class="interestCalculator"><img src="" class="card-img-top" alt="Interest Calculator"
+                    style="width:80%"></a>
+                <div class="card-body">
+                  <h4 class="card-title">Interest Rate Calculator</h4>
+                  <p class="card-text">Compound interest calculator to keep track of your money.</p>
+                  <a class="btn btn-primary interestCalculator">Open Calculator</a>
+                </div>
+              </div>
+
             </div>
           </div>
         </div>
@@ -327,7 +338,8 @@
         findingFreewill: "https://medium.com/@scott.harris17/finding-free-will-dd565e0135d4",
         viralSpread: "./apps/viralspread/viralSpread.html",
         qualeDemo: "https://www.youtube.com/shorts/k8tYTOxCEgs",
-        qualePressRelease: "https://innovation.ucsf.edu/news/see-your-ears"
+        qualePressRelease: "https://innovation.ucsf.edu/news/see-your-ears",
+        interestCalculator: "./apps/interestCalculator/interestCalculator.html"
       }
 
       // loop through and set each URL
@@ -368,7 +380,7 @@
     }
 
 
-    let contentStates = { //contentStates keeps track of which project cards are visible and which are not. The key value corresponds to an ID for one of the sections above. The value is either a 1 or a 0. 0 Corresponds to the section being closed (not visible), 1 corresponds to it being visible. contentSlider() will manipulate the values between 0 and 1 according to the user's activity.
+    let contentStates = { //contentStates keeps track of which project cards are visible and which are not. The key corresponds to an ID for one of the sections above. The value is either a 1 or a 0. 0 Corresponds to the section being closed (not visible), 1 corresponds to it being visible. contentSlider() will manipulate the values between 0 and 1 according to the user's activity.
       scienceSection: 0,
       softwareSection: 0,
       writingSection: 0,

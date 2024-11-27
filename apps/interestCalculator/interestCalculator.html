@@ -1,0 +1,162 @@
+<!DOCTYPE html>
+<html lang="en-US">
+<head><meta charset="utf-8">
+	<title>Viral Simulator</title>
+	<!-- chart.js--><script src="https://cdnjs.cloudflare.com/ajax/libs/Chart.js/2.7.2/Chart.js"></script>
+	<!-- Bootstrap CSS -->
+	<link rel="stylesheet" href="https://cdn.jsdelivr.net/npm/bootstrap@4.4.1/dist/css/bootstrap.min.css"
+	integrity="sha384-Vkoo8x4CGsO3+Hhxv8T/Q5PaXtkKtu6ug5TOeNV6gBiFeWPGFN9MuhOf23Q9Ifjh" crossorigin="anonymous">
+	<!-- jQuery-->
+	<script src="https://ajax.googleapis.com/ajax/libs/jquery/3.7.1/jquery.min.js"></script>
+	 <!-- Custom CSS -->
+	 <link rel="stylesheet" href="../../homestyle.css">
+
+	<style>
+		.formContainer{
+			border: 1px solid black;
+			border-radius: 3px;
+			min-width: 200px;
+			max-width: 600px;
+			background-color: rgb(252, 255, 244);
+			margin-top:5%;
+		}
+
+		.formContainer label{
+			font-weight: bold;
+		}
+
+		#submitButton{
+			border-radius: 4px;
+			background: rgb(227, 255, 187);
+			font-weight: bolder;
+		}
+
+		#submitButton:hover{
+			transform: scale(1.1);
+			background:rgb(191, 245, 255);
+    		transition: all 0.2s ease-in-out
+		}
+		
+	</style>
+</head>
+<body>
+
+	<!-- Full-Width "Navbar" -->
+	<a href="https://www.scottharris.xyz">
+		<nav class="navbar navbar-light navbar-brand mb-0 h1">
+			<h1>Scott C. Harris, PhD</h1>
+		</nav>
+	</a>
+
+	
+	<div class="contianer formContainer">
+		
+		<form id="interestRateCalculator" style="position:relative; margin-left: 5%">
+		<fieldset>
+			<legend style="text-align:center">Interest Rate Calculator</legend>
+			<div class="row">
+				<div class="col">
+					<label for="deposit">Initial Deposit</label>
+				</div>
+				<div class="col">
+					<input id="deposit" min="0" name="deposit" value = "10000" onfocusout="intChecker(this)" type="number" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="contribution">Monthly Contribution</label>
+				</div>
+				<div class="col">
+					<input id="contribution" min="0" name="contribution" value = "0" onfocusout="intChecker(this)" type="number" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="term">Term (years)</label>
+				</div>
+				<div class="col">
+					<input id="term" min="0" name="term" value = "10" onfocusout="intChecker(this)" type="number" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="rate">Interest Rate (%)</label>
+				</div>
+				<div class="col">
+					<input id="rate" min="0" name="rate" value = "10" onfocusout="intChecker(this)" type="number" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+					<label for="tax">Capital Gains Tax (%)</label>
+				</div>
+				<div class="col">
+					<input id="tax" min="0" name="tax" value = "30" onfocusout="intChecker(this)" type="number" />
+				</div>
+			</div>
+			<div class="row">
+				<div class="col">
+				</div>
+				<div class="col">
+					<button id="submitButton" onclick="calculateInterest()" type="button">Calculate!</button>
+				</div>
+		</fieldset>
+		</form>
+	</div>
+	<div class="results section">
+		<p>Your <b>pre-tax</b> return is: <span id="preTaxReturn" style="font-weight: bold;"></span></p>
+		<p>Your <b>post-tax</b> return is: <span id="postTaxReturn" style="font-weight:bold;"></span></p>
+		<p>Your <b>net</b> return is: <span id="netReturn" style="font-weight:bold;"></span></p></p>
+	</div>
+	<script>
+		function intChecker(val){
+
+		}
+		function calculateInterest(){
+			let deposit = document.getElementById("deposit").value;
+			let contribution = document.getElementById("contribution").value;
+			let term = document.getElementById("term").value;
+			let rate = document.getElementById("rate").value;
+			let tax = document.getElementById("tax").value;
+
+			let interest = deposit*(1+0.01*rate)**term; //compound interest formula
+			let postTaxReturn = interest *(1-tax*0.01);
+			let interestString = formatNumToDollarString(interest);
+			let postTaxString = formatNumToDollarString(postTaxReturn);
+			let netReturnString = formatNumToDollarString(postTaxReturn - deposit);
+			$('#preTaxReturn').html(`$${interestString}`)
+			$('#postTaxReturn').html(`$${postTaxString}`)
+			$('#netReturn').html(`$${netReturnString}`)
+		}
+
+		function formatNumToDollarString(number){
+			let multipliedNumber = Math.round(number*100);
+			let roundedNumber = multipliedNumber/100;
+
+			if(multipliedNumber%100 == 0){
+				numberString = roundedNumber.toString() + '.00';
+			}
+			else if(multipliedNumber%10 == 0){
+				numberString = roundedNumber.toString()+'0';
+			}
+			else{
+				numberString = roundedNumber.toString();
+			}
+
+			//round off the interest to an intelligable dollar amount
+			let formattedString = '';
+			let count = 0;
+			for(let i=numberString.length-4; i>-1; i--){
+				count++;
+				formattedString = numberString[i] + formattedString;
+
+				if(count%3==0 && i>0){
+					formattedString = ',' + formattedString;
+				}
+			}
+			formattedString = formattedString + '.' + numberString.slice(numberString.length-2,numberString.length);
+			return formattedString
+		}
+
+	</script>
+</body>
