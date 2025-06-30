@@ -7,6 +7,13 @@
       name="viewport"
       content="width=device-width, initial-scale=1, shrink-to-fit=no"
     />
+    <!-- Google Fonts -->
+    <link rel="preconnect" href="https://fonts.googleapis.com" />
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+    <link
+      href="https://fonts.googleapis.com/css2?family=Inter:wght@300;400;500;600;700&display=swap"
+      rel="stylesheet"
+    />
 
     <!-- Bootstrap CSS -->
     <link
@@ -30,10 +37,16 @@
     <!--settings-->
     <base target="_blank" />
   </head>
-
   <body onload="loadJSFunc()">
+    <!-- Progress indicator -->
+    <div class="progress-indicator" id="progressBar"></div>
+
+    <!-- Scroll to top button -->
+    <button class="scroll-to-top" id="scrollToTop" aria-label="Scroll to top">
+      ↑
+    </button>
     <!-- Full-Width "Navbar" -->
-    <nav class="navbar navbar-light navbar-brand mb-0 h1">
+    <nav>
       <h1>Scott C. Harris, PhD</h1>
     </nav>
 
@@ -42,7 +55,7 @@
       <div class="container" style="margin-top: 20px">
         <div class="row">
           <div class="col">
-            <p style="text-align: justify">
+            <p class="intro-text" style="text-align: justify">
               Hi, I'm Scott - A computational neuroscientist with a particular
               affinity for vision science. Professionally, I am building
               diagnostic technologies for early detection of neurologic diseases
@@ -58,10 +71,13 @@
           </div>
 
           <div class="col-md">
-            <div class="media" style="justify-content: center">
+            <div
+              class="media floating-animation"
+              style="justify-content: center"
+            >
               <img
                 src="./media/Headshot_SH.jpg"
-                style="height: 220px; border-radius: 8px; margin-top: 5px"
+                style="height: 220px; border-radius: 16px; margin-top: 5px"
                 alt="My Picture Was Supposed to Be Here :("
               />
             </div>
@@ -108,8 +124,7 @@
         </div>
       </div>
       <br />
-
-      <hr />
+      <div class="section-divider"></div>
       <!-- Portfolio Links -->
       <div class="container portfolioLinks">
         <h3>Online Portfolios</h3>
@@ -130,8 +145,7 @@
       </div>
       <br />
       <br />
-
-      <hr />
+      <div class="section-divider"></div>
       <!--List of Projects-->
       <div id="projects" class="container">
         <h3>Projects</h3>
@@ -167,14 +181,12 @@
                     <a class="btn btn-primary eLifePaper">Read the Paper</a>
                   </div>
                 </div>
-
                 <!--Copenhagen Award-->
                 <div class="card projectCard">
-                  <div style="text-align: center">
+                  <div class="video-container" style="margin: 1rem">
                     <iframe
-                      width="70%"
-                      height="140%"
                       src="https://youtube.com/embed/KDAUHv1MTpY?si=s7v8P0eBcyF9dZsx"
+                      allowfullscreen
                     >
                     </iframe>
                   </div>
@@ -385,7 +397,7 @@
                       live video into unique audioscapes
                     </p>
                     <a class="btn btn-primary qualeDemo">Watch Demo Video</a>
-                    <a class="btn btn-primary qualePressRelease"
+                    <a class="btn btn-secondary qualePressRelease"
                       >Press Release</a
                     >
                   </div>
@@ -395,7 +407,7 @@
                 <div class="card projectCard">
                   <a class="interestCalculator"
                     ><img
-                      src=""
+                      src="./media/calibrateLight.jpg"
                       class="card-img-top"
                       alt="Interest Calculator"
                       style="width: 80%"
@@ -423,11 +435,60 @@
         colorPallete: ["#FDF9FF", "#F9FDFF", "#FAFFF3", "#FFFCF5", "#FAFFFA"],
       };
       //
-
       function loadJSFunc() {
         // Runs when the body loads to call all other functions that need to be called on loading
         setURLs(); // set link URLs
         setProjectCardColors(); //randomizes background colors of project cards
+        initScrollEffects(); // initialize scroll-based effects
+        initIntersectionObserver(); // initialize animations on scroll
+      }
+
+      function initScrollEffects() {
+        // Progress bar
+        window.addEventListener("scroll", () => {
+          const scrollTop = window.pageYOffset;
+          const docHeight = document.body.scrollHeight - window.innerHeight;
+          const scrollPercent = (scrollTop / docHeight) * 100;
+          document.getElementById("progressBar").style.width =
+            scrollPercent + "%";
+        });
+
+        // Scroll to top button
+        const scrollToTopBtn = document.getElementById("scrollToTop");
+        window.addEventListener("scroll", () => {
+          if (window.pageYOffset > 300) {
+            scrollToTopBtn.classList.add("visible");
+          } else {
+            scrollToTopBtn.classList.remove("visible");
+          }
+        });
+
+        scrollToTopBtn.addEventListener("click", () => {
+          window.scrollTo({ top: 0, behavior: "smooth" });
+        });
+      }
+
+      function initIntersectionObserver() {
+        // Animate cards on scroll
+        const observer = new IntersectionObserver(
+          (entries) => {
+            entries.forEach((entry) => {
+              if (entry.isIntersecting) {
+                entry.target.style.opacity = "1";
+                entry.target.style.transform = "translateY(0)";
+              }
+            });
+          },
+          { threshold: 0.1 }
+        );
+
+        // Observe all project cards
+        document.querySelectorAll(".projectCard").forEach((card) => {
+          card.style.opacity = "0";
+          card.style.transform = "translateY(30px)";
+          card.style.transition = "opacity 0.6s ease, transform 0.6s ease";
+          observer.observe(card);
+        });
       }
 
       function setURLs() {
