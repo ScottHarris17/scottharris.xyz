@@ -1,0 +1,843 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Scott C. Harris, PhD — Meridian v2</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+  <link href="https://fonts.googleapis.com/css2?family=Figtree:wght@300;400;500;600;700&family=Instrument+Serif:ital@0;1&family=JetBrains+Mono:wght@300;400;500;600&display=swap" rel="stylesheet">
+  <style>
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+
+    /* ── Light Theme (Default) ── */
+    :root {
+      --bg: #f7faf9;
+      --bg-pattern: #e5ede9;
+      --primary: #0f766e;
+      --primary-light: #14b8a6;
+      --accent: #d97706;
+      --violet: #8b5cf6;
+      --text: #0f172a;
+      --text-secondary: #475569;
+      --card-bg: #ffffff;
+      --card-border: #e2e8f0;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+      --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+      --glass: rgba(255, 255, 255, 0.8);
+      --glass-border: rgba(0, 0, 0, 0.06);
+      --nav-bg: rgba(255, 255, 255, 0.92);
+      --nav-border: rgba(15, 118, 110, 0.15);
+      --cv-bar-bg: rgba(15, 118, 110, 0.04);
+      --chat-user-bg: rgba(15, 118, 110, 0.06);
+      --chat-user-border: rgba(15, 118, 110, 0.12);
+      --chat-ai-bg: rgba(0, 0, 0, 0.02);
+      --chat-ai-border: rgba(0, 0, 0, 0.06);
+      --about-bg: rgba(15, 118, 110, 0.03);
+      --input-bg: rgba(0, 0, 0, 0.02);
+      --input-border: #e2e8f0;
+      --footer-border: rgba(15, 118, 110, 0.15);
+      --muted: rgba(71, 85, 105, 0.4);
+      --pill-active-bg: var(--primary);
+      --pill-active-text: #ffffff;
+      --pill-bg: rgba(15, 118, 110, 0.06);
+      --pill-text: var(--text-secondary);
+      --ambient-display: none;
+    }
+
+    /* ── Dark Theme ── */
+    [data-theme="dark"] {
+      --bg: #050a12;
+      --bg-pattern: #0f1a2e;
+      --primary: #2dd4bf;
+      --primary-light: #5eead4;
+      --accent: #f59e0b;
+      --text: #f1f5f9;
+      --text-secondary: #94a3b8;
+      --card-bg: #0f1729;
+      --card-border: #1e293b;
+      --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+      --card-shadow-hover: 0 4px 12px rgba(45, 212, 191, 0.06), 0 8px 24px rgba(0,0,0,0.3);
+      --glass: rgba(15, 23, 42, 0.7);
+      --glass-border: rgba(255, 255, 255, 0.06);
+      --nav-bg: rgba(10, 15, 26, 0.92);
+      --nav-border: rgba(45, 212, 191, 0.2);
+      --cv-bar-bg: rgba(45, 212, 191, 0.06);
+      --chat-user-bg: rgba(45, 212, 191, 0.08);
+      --chat-user-border: rgba(45, 212, 191, 0.15);
+      --chat-ai-bg: rgba(255, 255, 255, 0.03);
+      --chat-ai-border: rgba(255, 255, 255, 0.06);
+      --about-bg: rgba(45, 212, 191, 0.03);
+      --input-bg: rgba(255, 255, 255, 0.04);
+      --input-border: #1e293b;
+      --footer-border: rgba(45, 212, 191, 0.15);
+      --muted: rgba(148, 163, 184, 0.4);
+      --pill-active-bg: var(--primary);
+      --pill-active-text: #050a12;
+      --pill-bg: rgba(45, 212, 191, 0.08);
+      --pill-text: var(--text-secondary);
+      --ambient-display: block;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      font-family: 'Figtree', sans-serif;
+      background-color: var(--bg);
+      color: var(--text);
+      overflow-x: hidden;
+      -webkit-font-smoothing: antialiased;
+      line-height: 1.7;
+      background-image: radial-gradient(circle, var(--bg-pattern) 1px, transparent 1px);
+      background-size: 28px 28px;
+      transition: background-color 0.3s, color 0.3s;
+    }
+
+    a { color: var(--primary); text-decoration: none; transition: color 0.2s; }
+    a:hover { color: var(--primary-light); }
+
+    .serif { font-family: 'Instrument Serif', serif; }
+    .mono { font-family: 'JetBrains Mono', monospace; }
+
+    /* ── Dark-mode ambient mesh ── */
+    .ambient-bg {
+      position: fixed; inset: 0; z-index: 0;
+      display: var(--ambient-display);
+      pointer-events: none;
+      transition: display 0s;
+    }
+    .ambient-bg::before, .ambient-bg::after {
+      content: ''; position: absolute;
+      width: 120%; height: 120%; top: -10%; left: -10%;
+      border-radius: 50%;
+      animation: drift 40s ease-in-out infinite alternate;
+    }
+    .ambient-bg::before {
+      background:
+        radial-gradient(ellipse 60% 50% at 25% 30%, rgba(13, 59, 56, 0.18) 0%, transparent 70%),
+        radial-gradient(ellipse 50% 60% at 75% 70%, rgba(46, 16, 101, 0.10) 0%, transparent 70%);
+    }
+    .ambient-bg::after {
+      background:
+        radial-gradient(ellipse 55% 45% at 60% 20%, rgba(5, 46, 22, 0.16) 0%, transparent 70%),
+        radial-gradient(ellipse 40% 55% at 30% 80%, rgba(13, 59, 56, 0.10) 0%, transparent 70%);
+      animation-delay: -20s; animation-direction: alternate-reverse;
+    }
+    @keyframes drift {
+      0%   { transform: translate(0, 0) scale(1); }
+      33%  { transform: translate(3%, -2%) scale(1.03); }
+      66%  { transform: translate(-2%, 3%) scale(0.97); }
+      100% { transform: translate(1%, -1%) scale(1.01); }
+    }
+
+    /* ── Navigation ── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: var(--nav-bg);
+      backdrop-filter: blur(20px); -webkit-backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--nav-border);
+      transition: background-color 0.3s, border-color 0.3s;
+    }
+    .nav-inner {
+      max-width: 1200px; margin: 0 auto; padding: 0 2rem;
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    .nav-logo {
+      font-family: 'Instrument Serif', serif; font-size: 1.35rem;
+      color: var(--primary); text-decoration: none;
+      transition: color 0.3s;
+    }
+    .nav-center { display: flex; gap: 2.25rem; align-items: center; }
+    .nav-center a {
+      font-family: 'Figtree', sans-serif; font-size: 0.92rem; font-weight: 500;
+      color: var(--text-secondary); text-decoration: none;
+      position: relative; padding-bottom: 2px;
+      transition: color 0.25s;
+    }
+    .nav-center a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1.5px; background: var(--primary);
+      transition: width 0.3s ease;
+    }
+    .nav-center a:hover { color: var(--primary); }
+    .nav-center a:hover::after { width: 100%; }
+
+    .theme-toggle {
+      background: none; border: 1px solid var(--card-border);
+      border-radius: 8px; padding: 6px 8px; cursor: pointer;
+      color: var(--text-secondary); display: flex; align-items: center;
+      transition: border-color 0.3s, color 0.3s, background 0.3s;
+    }
+    .theme-toggle:hover { border-color: var(--primary); color: var(--primary); }
+    .theme-toggle svg { width: 18px; height: 18px; }
+    .theme-toggle .icon-moon { display: block; }
+    .theme-toggle .icon-sun { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-moon { display: none; }
+    [data-theme="dark"] .theme-toggle .icon-sun { display: block; }
+
+    .nav-hamburger {
+      display: none; flex-direction: column; gap: 4px; cursor: pointer;
+      background: none; border: none; padding: 4px;
+    }
+    .nav-hamburger span {
+      display: block; width: 22px; height: 2px;
+      background: var(--primary); border-radius: 1px; transition: background 0.3s;
+    }
+    .nav-right { display: flex; align-items: center; gap: 1rem; }
+
+    .mobile-menu {
+      display: none; position: absolute; top: 64px; left: 0; right: 0;
+      background: var(--nav-bg); backdrop-filter: blur(20px);
+      border-bottom: 1px solid var(--nav-border);
+      padding: 1rem 2rem; flex-direction: column; gap: 1rem;
+    }
+    .mobile-menu.open { display: flex; }
+    .mobile-menu a {
+      font-size: 1rem; font-weight: 500; color: var(--text-secondary);
+      padding: 0.5rem 0; text-decoration: none;
+    }
+
+    /* ── Hero ── */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      align-items: center; justify-content: center; text-align: center;
+      padding: 100px 2rem 60px; position: relative; z-index: 1;
+    }
+    .hero-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.72rem; font-weight: 500; letter-spacing: 0.2em;
+      text-transform: uppercase; color: var(--primary); margin-bottom: 1.25rem;
+      opacity: 0; animation: fadeUp 0.8s 0.2s forwards;
+    }
+    .hero-name {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(3rem, 6vw, 5rem); font-weight: 400;
+      line-height: 1.1; color: var(--primary);
+      opacity: 0; animation: fadeUp 0.8s 0.35s forwards;
+      transition: color 0.3s;
+    }
+    .hero-oneliner {
+      font-size: 1.1rem; color: var(--text-secondary);
+      max-width: 560px; margin: 1rem auto 0;
+      opacity: 0; animation: fadeUp 0.8s 0.5s forwards;
+      transition: color 0.3s;
+    }
+
+    @keyframes fadeUp {
+      from { opacity: 0; transform: translateY(20px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── CV + Links Bar ── */
+    .cv-bar {
+      display: flex; align-items: center; justify-content: center;
+      gap: 2rem; flex-wrap: wrap;
+      margin-top: 2.5rem; padding: 1.25rem 2.5rem;
+      background: var(--cv-bar-bg); border-radius: 14px;
+      border: 1px solid var(--card-border);
+      width: 100%; max-width: 720px;
+      opacity: 0; animation: fadeUp 0.8s 0.65s forwards;
+      transition: background 0.3s, border-color 0.3s;
+    }
+    .cv-download {
+      display: inline-flex; align-items: center; gap: 0.5rem;
+      padding: 0.7rem 1.6rem; border-radius: 8px;
+      background: var(--primary); color: #ffffff;
+      font-family: 'Figtree', sans-serif; font-size: 0.95rem; font-weight: 600;
+      text-decoration: none; border: none; cursor: pointer;
+      transition: background 0.25s, box-shadow 0.25s, transform 0.15s;
+      box-shadow: 0 2px 8px rgba(15, 118, 110, 0.25);
+    }
+    .cv-download:hover {
+      background: var(--accent); color: #ffffff;
+      box-shadow: 0 4px 16px rgba(217, 119, 6, 0.3);
+      transform: translateY(-1px);
+    }
+    .cv-download svg { width: 16px; height: 16px; }
+
+    .social-links { display: flex; align-items: center; gap: 1.5rem; flex-wrap: wrap; }
+    .social-link {
+      display: inline-flex; align-items: center; gap: 0.4rem;
+      font-size: 0.88rem; font-weight: 500; color: var(--text-secondary);
+      text-decoration: none; transition: color 0.25s;
+    }
+    .social-link svg { width: 16px; height: 16px; fill: currentColor; flex-shrink: 0; }
+    .social-link:hover { color: var(--primary); }
+
+    /* ── Chat Panel ── */
+    .chat-panel {
+      width: 100%; max-width: 680px; margin-top: 2.5rem;
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-top: 2px solid var(--primary);
+      border-radius: 16px; overflow: hidden;
+      box-shadow: var(--card-shadow);
+      opacity: 0; animation: fadeUp 0.8s 0.8s forwards;
+      transition: background 0.3s, border-color 0.3s, box-shadow 0.3s;
+    }
+    [data-theme="dark"] .chat-panel {
+      background: var(--glass);
+      backdrop-filter: blur(16px); -webkit-backdrop-filter: blur(16px);
+    }
+    .chat-header {
+      display: flex; align-items: center; gap: 0.6rem;
+      padding: 1rem 1.5rem; border-bottom: 1px solid var(--card-border);
+    }
+    .pulse-dot {
+      width: 8px; height: 8px; border-radius: 50%; background: var(--primary);
+      animation: pulse 2s ease-in-out infinite; flex-shrink: 0;
+    }
+    @keyframes pulse {
+      0%, 100% { transform: scale(1); opacity: 0.7; }
+      50% { transform: scale(1.4); opacity: 1; }
+    }
+    .chat-header-text {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.85rem; font-weight: 500; color: var(--primary);
+    }
+    .chat-header-sub {
+      font-family: 'Figtree', sans-serif;
+      font-size: 0.85rem; color: var(--text-secondary); margin-left: 0.25rem;
+    }
+
+    .chat-messages { padding: 1.25rem 1.5rem; display: flex; flex-direction: column; gap: 0.85rem; }
+    .msg {
+      max-width: 88%; line-height: 1.65; font-size: 0.9rem;
+      padding: 0.75rem 1rem; border-radius: 14px;
+      opacity: 0; animation: msgIn 0.5s forwards;
+    }
+    .msg-user {
+      align-self: flex-end;
+      background: var(--chat-user-bg); border: 1px solid var(--chat-user-border);
+      border-bottom-right-radius: 4px;
+      font-family: 'Figtree', sans-serif; color: var(--text);
+    }
+    .msg-ai {
+      align-self: flex-start;
+      background: var(--chat-ai-bg); border: 1px solid var(--chat-ai-border);
+      border-bottom-left-radius: 4px;
+      font-family: 'Figtree', sans-serif; color: var(--text-secondary);
+    }
+    .msg:nth-child(1) { animation-delay: 1.2s; }
+    .msg:nth-child(2) { animation-delay: 1.6s; }
+    .msg:nth-child(3) { animation-delay: 2.2s; }
+    .msg:nth-child(4) { animation-delay: 2.6s; }
+    @keyframes msgIn {
+      from { opacity: 0; transform: translateY(8px); }
+      to   { opacity: 1; transform: translateY(0); }
+    }
+    .msg-ai a { color: var(--primary); text-decoration: none; font-weight: 500; }
+    .msg-ai a:hover { text-decoration: underline; }
+
+    .chat-input-wrap {
+      padding: 1rem 1.5rem; border-top: 1px solid var(--card-border);
+      display: flex; gap: 0.75rem;
+    }
+    .chat-input {
+      flex: 1; padding: 0.7rem 1rem; border-radius: 10px;
+      background: var(--input-bg); border: 1px solid var(--input-border);
+      color: var(--text); font-family: 'Figtree', sans-serif; font-size: 0.9rem;
+      outline: none; transition: border-color 0.3s, box-shadow 0.3s;
+    }
+    .chat-input::placeholder { color: var(--text-secondary); opacity: 0.5; }
+    .chat-input:focus { border-color: var(--primary); box-shadow: 0 0 0 3px rgba(15, 118, 110, 0.1); }
+    .chat-send {
+      padding: 0.7rem 1rem; border-radius: 10px; border: none;
+      background: var(--primary); color: #ffffff; cursor: pointer;
+      display: flex; align-items: center; transition: background 0.25s;
+    }
+    .chat-send:hover { background: var(--primary-light); }
+    .chat-send svg { width: 16px; height: 16px; }
+    .chat-footnote {
+      text-align: center; padding: 0.5rem 0 0.85rem;
+      font-size: 0.7rem; color: var(--muted);
+    }
+
+    /* ── Scroll Indicator ── */
+    .scroll-indicator {
+      margin-top: 2.5rem;
+      opacity: 0; animation: fadeUp 0.6s 3.2s forwards;
+    }
+    .scroll-indicator svg { animation: bounce 2.5s ease-in-out infinite; }
+    @keyframes bounce { 0%, 100% { transform: translateY(0); } 50% { transform: translateY(8px); } }
+
+    /* ── Sections ── */
+    section { padding: 100px 0; position: relative; z-index: 1; }
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2rem; }
+
+    .section-title {
+      font-family: 'Instrument Serif', serif;
+      font-size: clamp(2.2rem, 4vw, 3rem);
+      text-align: center; margin-bottom: 0.4rem;
+      transition: color 0.3s;
+    }
+    .section-sub {
+      text-align: center; color: var(--text-secondary);
+      font-size: 1rem; margin-bottom: 2.5rem;
+      transition: color 0.3s;
+    }
+
+    /* ── Category Filter ── */
+    .filter-pills {
+      display: flex; justify-content: center; gap: 0.6rem;
+      margin-bottom: 2.5rem; flex-wrap: wrap;
+    }
+    .filter-pill {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.75rem; font-weight: 500; letter-spacing: 0.04em;
+      padding: 0.45rem 1.1rem; border-radius: 100px;
+      border: 1px solid var(--card-border); background: var(--pill-bg);
+      color: var(--pill-text); cursor: pointer;
+      transition: all 0.25s;
+    }
+    .filter-pill:hover { border-color: var(--primary); color: var(--primary); }
+    .filter-pill.active {
+      background: var(--pill-active-bg); color: var(--pill-active-text);
+      border-color: var(--pill-active-bg);
+    }
+
+    /* ── Projects Grid ── */
+    .projects-grid {
+      display: grid; grid-template-columns: repeat(3, 1fr); gap: 1.5rem;
+    }
+    .project-card {
+      background: var(--card-bg); border: 1px solid var(--card-border);
+      border-radius: 14px; padding: 1.75rem;
+      box-shadow: var(--card-shadow);
+      transition: box-shadow 0.3s, border-color 0.3s, transform 0.3s, opacity 0.3s, background 0.3s;
+      opacity: 0; transform: translateY(24px);
+    }
+    .project-card.visible {
+      opacity: 1; transform: translateY(0);
+      transition: opacity 0.6s, transform 0.6s, box-shadow 0.3s, border-color 0.3s, background 0.3s;
+    }
+    .project-card:hover {
+      transform: translateY(-2px);
+      box-shadow: var(--card-shadow-hover);
+    }
+    .project-card.hidden {
+      display: none;
+    }
+
+    .card-category {
+      display: inline-block; font-family: 'JetBrains Mono', monospace;
+      font-size: 0.68rem; font-weight: 600; text-transform: uppercase;
+      letter-spacing: 0.08em; padding: 0.25rem 0.7rem; border-radius: 100px;
+      margin-bottom: 1rem;
+    }
+    .cat-science { background: rgba(15, 118, 110, 0.1); color: var(--primary); }
+    .cat-software { background: rgba(217, 119, 6, 0.1); color: var(--accent); }
+    .cat-writing { background: rgba(139, 92, 246, 0.1); color: var(--violet); }
+    .cat-interactive { background: rgba(71, 85, 105, 0.1); color: var(--text-secondary); }
+    [data-theme="dark"] .cat-science { background: rgba(45, 212, 191, 0.1); }
+    [data-theme="dark"] .cat-software { background: rgba(245, 158, 11, 0.1); }
+    [data-theme="dark"] .cat-writing { background: rgba(139, 92, 246, 0.15); }
+    [data-theme="dark"] .cat-interactive { background: rgba(148, 163, 184, 0.1); }
+
+    .card-title {
+      font-family: 'Instrument Serif', serif; font-size: 1.25rem;
+      font-weight: 400; margin-bottom: 0.5rem; transition: color 0.3s;
+    }
+    .card-desc {
+      font-size: 0.88rem; color: var(--text-secondary); line-height: 1.6;
+      margin-bottom: 1.25rem; transition: color 0.3s;
+      display: -webkit-box; -webkit-line-clamp: 2; -webkit-box-orient: vertical; overflow: hidden;
+    }
+    .card-link {
+      font-size: 0.85rem; color: var(--primary); font-weight: 500;
+      text-decoration: none; transition: letter-spacing 0.3s, color 0.3s;
+    }
+    .card-link:hover { letter-spacing: 0.04em; }
+
+    /* ── About ── */
+    .about-section { background: var(--about-bg); transition: background 0.3s; }
+    .about-inner { max-width: 740px; margin: 0 auto; text-align: center; }
+    .about-quote {
+      font-family: 'Instrument Serif', serif; font-style: italic;
+      font-size: clamp(1.4rem, 2.8vw, 1.9rem); color: var(--primary);
+      line-height: 1.5; margin-bottom: 2rem; transition: color 0.3s;
+    }
+    .about-bio {
+      font-size: 1.02rem; color: var(--text-secondary); line-height: 1.85;
+      margin-bottom: 3rem; transition: color 0.3s;
+    }
+
+    .stats-row { display: flex; justify-content: center; gap: 3.5rem; flex-wrap: wrap; }
+    .stat-item { text-align: center; }
+    .stat-value {
+      font-family: 'Instrument Serif', serif;
+      font-size: 2.5rem; font-weight: 400; color: var(--primary);
+      line-height: 1.1; transition: color 0.3s;
+    }
+    .stat-label {
+      font-family: 'JetBrains Mono', monospace;
+      font-size: 0.65rem; font-weight: 500; text-transform: uppercase;
+      letter-spacing: 0.12em; color: var(--text-secondary);
+      margin-top: 0.35rem; transition: color 0.3s;
+    }
+
+    /* ── Footer ── */
+    footer {
+      border-top: 1px solid var(--footer-border);
+      text-align: center; padding: 3rem 2rem;
+      position: relative; z-index: 1;
+      transition: border-color 0.3s;
+    }
+    .footer-copy {
+      font-size: 0.85rem; color: var(--text-secondary);
+      margin-bottom: 1rem; transition: color 0.3s;
+    }
+    .footer-links { display: flex; justify-content: center; gap: 1.5rem; flex-wrap: wrap; }
+    .footer-links a {
+      font-size: 0.82rem; color: var(--text-secondary);
+      text-decoration: none; transition: color 0.25s;
+    }
+    .footer-links a:hover { color: var(--primary); }
+
+    /* ── Responsive ── */
+    @media (max-width: 1024px) {
+      .hero-name { font-size: clamp(2.5rem, 5vw, 3.5rem); }
+      .projects-grid { grid-template-columns: repeat(2, 1fr); }
+    }
+
+    @media (max-width: 768px) {
+      .nav-center { display: none; }
+      .nav-hamburger { display: flex; }
+      .hero { padding: 90px 1.25rem 40px; }
+      section { padding: 70px 0; }
+      .projects-grid { grid-template-columns: 1fr; }
+      .cv-bar {
+        flex-direction: column; gap: 1.25rem; padding: 1.25rem 1.5rem;
+      }
+      .social-links { justify-content: center; }
+      .chat-panel { border-radius: 14px; }
+      .chat-messages { padding: 1rem; }
+      .stats-row { gap: 2rem; }
+    }
+
+    @media (max-width: 480px) {
+      .container { padding: 0 1rem; }
+      .nav-inner { padding: 0 1rem; }
+      .hero { padding: 80px 1rem 30px; }
+      .hero-label { font-size: 0.62rem; letter-spacing: 0.15em; }
+      .hero-oneliner { font-size: 0.95rem; }
+      .cv-bar { padding: 1rem; max-width: 100%; }
+      .social-links { gap: 1rem; }
+      .social-link span { display: none; }
+      .chat-input-wrap { padding: 0.75rem 1rem; }
+      .msg { font-size: 0.84rem; }
+      .project-card { margin: 0 0.25rem; }
+      .about-quote { font-size: 1.25rem; }
+      .stat-value { font-size: 2rem; }
+      .stats-row { gap: 1.5rem; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- Ambient bg (dark mode only) -->
+  <div class="ambient-bg"></div>
+
+  <!-- Navigation -->
+  <nav>
+    <div class="nav-inner">
+      <a href="#" class="nav-logo">Scott Harris</a>
+      <div class="nav-center">
+        <a href="#projects">Projects</a>
+        <a href="#resume">Resume</a>
+        <a href="#about">About</a>
+      </div>
+      <div class="nav-right">
+        <button class="theme-toggle" id="themeToggle" aria-label="Toggle theme">
+          <svg class="icon-moon" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 12.79A9 9 0 1 1 11.21 3 7 7 0 0 0 21 12.79z"/></svg>
+          <svg class="icon-sun" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><circle cx="12" cy="12" r="5"/><line x1="12" y1="1" x2="12" y2="3"/><line x1="12" y1="21" x2="12" y2="23"/><line x1="4.22" y1="4.22" x2="5.64" y2="5.64"/><line x1="18.36" y1="18.36" x2="19.78" y2="19.78"/><line x1="1" y1="12" x2="3" y2="12"/><line x1="21" y1="12" x2="23" y2="12"/><line x1="4.22" y1="19.78" x2="5.64" y2="18.36"/><line x1="18.36" y1="5.64" x2="19.78" y2="4.22"/></svg>
+        </button>
+        <button class="nav-hamburger" id="hamburgerBtn" aria-label="Menu">
+          <span></span><span></span><span></span>
+        </button>
+      </div>
+    </div>
+    <div class="mobile-menu" id="mobileMenu">
+      <a href="#projects">Projects</a>
+      <a href="#resume">Resume</a>
+      <a href="#about">About</a>
+    </div>
+  </nav>
+
+  <!-- Hero -->
+  <section class="hero">
+    <p class="hero-label">Neuroscientist &middot; CTO &middot; AI Engineer</p>
+    <h1 class="hero-name">Scott C. Harris, PhD</h1>
+    <p class="hero-oneliner">Building intelligent systems &mdash; from neural circuits to AI-powered products</p>
+
+    <!-- CV + Links Bar -->
+    <div class="cv-bar" id="resume">
+      <a href="../media/CV_ScottHarris.pdf" target="_blank" class="cv-download">
+        <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
+        Download CV
+      </a>
+      <div class="social-links">
+        <a href="https://www.linkedin.com/in/scott-harris-phd/" target="_blank" class="social-link">
+          <svg viewBox="0 0 24 24"><path d="M20.447 20.452h-3.554v-5.569c0-1.328-.027-3.037-1.852-3.037-1.853 0-2.136 1.445-2.136 2.939v5.667H9.351V9h3.414v1.561h.046c.477-.9 1.637-1.85 3.37-1.85 3.601 0 4.267 2.37 4.267 5.455v6.286zM5.337 7.433a2.062 2.062 0 0 1-2.063-2.065 2.064 2.064 0 1 1 2.063 2.065zm1.782 13.019H3.555V9h3.564v11.452zM22.225 0H1.771C.792 0 0 .774 0 1.729v20.542C0 23.227.792 24 1.771 24h20.451C23.2 24 24 23.227 24 22.271V1.729C24 .774 23.2 0 22.222 0h.003z"/></svg>
+          <span>LinkedIn</span>
+        </a>
+        <a href="https://github.com/scottharris17" target="_blank" class="social-link">
+          <svg viewBox="0 0 24 24"><path d="M12 .297c-6.63 0-12 5.373-12 12 0 5.303 3.438 9.8 8.205 11.385.6.113.82-.258.82-.577 0-.285-.01-1.04-.015-2.04-3.338.724-4.042-1.61-4.042-1.61C4.422 18.07 3.633 17.7 3.633 17.7c-1.087-.744.084-.729.084-.729 1.205.084 1.838 1.236 1.838 1.236 1.07 1.835 2.809 1.305 3.495.998.108-.776.417-1.305.76-1.605-2.665-.3-5.466-1.332-5.466-5.93 0-1.31.465-2.38 1.235-3.22-.135-.303-.54-1.523.105-3.176 0 0 1.005-.322 3.3 1.23.96-.267 1.98-.399 3-.405 1.02.006 2.04.138 3 .405 2.28-1.552 3.285-1.23 3.285-1.23.645 1.653.24 2.873.12 3.176.765.84 1.23 1.91 1.23 3.22 0 4.61-2.805 5.625-5.475 5.92.42.36.81 1.096.81 2.22 0 1.606-.015 2.896-.015 3.286 0 .315.21.69.825.57C20.565 22.092 24 17.592 24 12.297c0-6.627-5.373-12-12-12"/></svg>
+          <span>GitHub</span>
+        </a>
+        <a href="https://scholar.google.com/citations?user=-0CFW9oAAAAJ&hl=en&oi=ao" target="_blank" class="social-link">
+          <svg viewBox="0 0 24 24"><path d="M5.242 13.769 0 9.5 12 0l12 9.5-5.242 4.269C17.548 11.249 14.978 9.5 12 9.5c-2.977 0-5.548 1.748-6.758 4.269zM12 10a7 7 0 1 0 0 14 7 7 0 0 0 0-14z"/></svg>
+          <span>Scholar</span>
+        </a>
+        <a href="https://medium.com/@scott.harris17" target="_blank" class="social-link">
+          <svg viewBox="0 0 24 24"><path d="M13.54 12a6.8 6.8 0 0 1-6.77 6.82A6.8 6.8 0 0 1 0 12a6.8 6.8 0 0 1 6.77-6.82A6.8 6.8 0 0 1 13.54 12zM20.96 12c0 3.54-1.51 6.42-3.38 6.42-1.87 0-3.39-2.88-3.39-6.42s1.52-6.42 3.39-6.42 3.38 2.88 3.38 6.42M24 12c0 3.17-.53 5.75-1.19 5.75-.66 0-1.19-2.58-1.19-5.75s.53-5.75 1.19-5.75C23.47 6.25 24 8.83 24 12z"/></svg>
+          <span>Medium</span>
+        </a>
+      </div>
+    </div>
+
+    <!-- AI Chat Panel -->
+    <div class="chat-panel">
+      <div class="chat-header">
+        <div class="pulse-dot"></div>
+        <span class="chat-header-text">AI Scott</span>
+        <span class="chat-header-sub">&mdash; Ask me anything</span>
+      </div>
+      <div class="chat-messages">
+        <div class="msg msg-user">What does Scott do?</div>
+        <div class="msg msg-ai">Scott is a computational neuroscientist turned AI leader. He's currently CTO of a psychology startup where he built the full stack for automating practices with AI. Previously at Eon Systems, he led the creation of the first multi-behavior brain upload using the drosophila connectome and spiking neural networks &mdash; that project got 30 million impressions in its first week. He also developed a diagnostic tool for neurodegenerative diseases with <a href="#">UCSF</a>.</div>
+        <div class="msg msg-user">Show me his projects</div>
+        <div class="msg msg-ai">Here are some highlights: <a href="#">Bassoon</a> &mdash; psychophysics platform, <a href="#">Electrophysiology Pipeline</a> &mdash; neural data analysis, <a href="#">Calibrate Light</a> &mdash; photoisomerization calculator. He's also built interactive demos like a <a href="#">Viral Spread Simulator</a> and <a href="#">Interest Calculator</a>. Want to know more about any of these?</div>
+      </div>
+      <div class="chat-input-wrap">
+        <input type="text" class="chat-input" placeholder="Ask about Scott..." disabled>
+        <button class="chat-send" aria-label="Send">
+          <svg viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2" stroke-linecap="round" stroke-linejoin="round"><line x1="22" y1="2" x2="11" y2="13"/><polygon points="22 2 15 22 11 13 2 9 22 2"/></svg>
+        </button>
+      </div>
+      <div class="chat-footnote">Powered by AI &middot; Voice coming soon</div>
+    </div>
+
+    <!-- Scroll indicator -->
+    <div class="scroll-indicator">
+      <svg width="24" height="24" viewBox="0 0 24 24" fill="none" stroke="var(--text-secondary)" stroke-width="1.5" stroke-linecap="round" stroke-linejoin="round">
+        <polyline points="6 9 12 15 18 9"></polyline>
+      </svg>
+    </div>
+  </section>
+
+  <!-- Projects -->
+  <section id="projects">
+    <div class="container">
+      <h2 class="section-title">Projects</h2>
+      <p class="section-sub">Research, software, writing, and more</p>
+
+      <div class="filter-pills">
+        <button class="filter-pill active" data-filter="all">All</button>
+        <button class="filter-pill" data-filter="science">Science</button>
+        <button class="filter-pill" data-filter="software">Software</button>
+        <button class="filter-pill" data-filter="writing">Writing</button>
+        <button class="filter-pill" data-filter="interactive">Interactive</button>
+      </div>
+
+      <div class="projects-grid">
+
+        <div class="project-card" data-category="science">
+          <span class="card-category cat-science">Science</span>
+          <h3 class="card-title serif">Retinal Image Stabilization</h3>
+          <p class="card-desc">Published in eLife. How the retina compensates for fixational eye movements to maintain stable visual perception.</p>
+          <a href="https://elifesciences.org/articles/81780" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="science">
+          <span class="card-category cat-science">Science</span>
+          <h3 class="card-title serif">Copenhagen Award 2024</h3>
+          <p class="card-desc">Recognized for outstanding contributions to vision science research at the Copenhagen symposium.</p>
+          <a href="https://youtube.com/embed/KDAUHv1MTpY?si=s7v8P0eBcyF9dZsx" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="science">
+          <span class="card-category cat-science">Science</span>
+          <h3 class="card-title serif">Glaucoma Circuit Analysis</h3>
+          <p class="card-desc">Mapping how elevated intraocular pressure disrupts retinal ganglion cell circuits and signal processing.</p>
+          <a href="#" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="software">
+          <span class="card-category cat-software">Software</span>
+          <h3 class="card-title serif">Bassoon</h3>
+          <p class="card-desc">Flexible psychophysics stimulus generation platform for designing and running vision science experiments.</p>
+          <a href="https://github.com/scottharris17/bassoon" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="software">
+          <span class="card-category cat-software">Software</span>
+          <h3 class="card-title serif">Electrophysiology Pipeline</h3>
+          <p class="card-desc">End-to-end data processing pipeline for multi-electrode array recordings of retinal neural activity.</p>
+          <a href="https://github.com/ScottHarris17/ElectrophysiologyPipeline" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="software">
+          <span class="card-category cat-software">Software</span>
+          <h3 class="card-title serif">Calibrate Light</h3>
+          <p class="card-desc">Precision calculator for photoisomerization rates, essential for calibrating light stimuli in experiments.</p>
+          <a href="https://github.com/ScottHarris17/CalibrateLight" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="writing">
+          <span class="card-category cat-writing">Writing</span>
+          <h3 class="card-title serif">Confronting Consciousness</h3>
+          <p class="card-desc">Philosophical exploration of the hard problem of consciousness through the lens of computational neuroscience.</p>
+          <a href="https://medium.com/swlh/confronting-consciousness-8268fc2ff729" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="writing">
+          <span class="card-category cat-writing">Writing</span>
+          <h3 class="card-title serif">Finding Free Will</h3>
+          <p class="card-desc">An essay on determinism, agency, and what neuroscience reveals about the nature of human choice.</p>
+          <a href="https://medium.com/@scott.harris17/finding-free-will-dd565e0135d4" target="_blank" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="interactive">
+          <span class="card-category cat-interactive">Interactive</span>
+          <h3 class="card-title serif">Viral Spread Simulator</h3>
+          <p class="card-desc">Interactive visualization of epidemiological dynamics, infection curves, and intervention strategies.</p>
+          <a href="../apps/viralspread/viralSpread.html" class="card-link">View &rarr;</a>
+        </div>
+
+        <div class="project-card" data-category="interactive">
+          <span class="card-category cat-interactive">Interactive</span>
+          <h3 class="card-title serif">Interest Calculator</h3>
+          <p class="card-desc">Clean tool for visualizing compound interest growth with adjustable parameters and real-time charts.</p>
+          <a href="../apps/interestCalculator/interestCalculator.html" class="card-link">View &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- About -->
+  <section id="about" class="about-section">
+    <div class="container">
+      <div class="about-inner">
+        <p class="about-quote">&ldquo;From neural circuits to neural networks &mdash; understanding intelligence requires building it.&rdquo;</p>
+        <p class="about-bio">Scott C. Harris is a computational neuroscientist and technologist whose career spans from retinal electrophysiology to leading AI product development. As CTO of a psychology startup, he built the full stack for automating clinical practices with AI. At Eon Systems, he led the first multi-behavior brain upload using the complete drosophila connectome. His research at UCSF produced a new diagnostic tool for neurodegenerative diseases, alongside published work on retinal computation and the Copenhagen Award in 2024.</p>
+        <div class="stats-row">
+          <div class="stat-item">
+            <div class="stat-value">5+</div>
+            <div class="stat-label">Publications</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">6</div>
+            <div class="stat-label">Software Tools</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-value">30M</div>
+            <div class="stat-label">Impressions</div>
+          </div>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Footer -->
+  <footer>
+    <p class="footer-copy">&copy; 2026 Scott C. Harris, PhD</p>
+    <div class="footer-links">
+      <a href="https://www.linkedin.com/in/scott-harris-phd/" target="_blank">LinkedIn</a>
+      <a href="https://github.com/scottharris17" target="_blank">GitHub</a>
+      <a href="https://scholar.google.com/citations?user=-0CFW9oAAAAJ&hl=en&oi=ao" target="_blank">Google Scholar</a>
+      <a href="https://medium.com/@scott.harris17" target="_blank">Medium</a>
+    </div>
+  </footer>
+
+  <script>
+    (function() {
+      // ── Theme Toggle ──
+      var html = document.documentElement;
+      var toggle = document.getElementById('themeToggle');
+
+      // Respect system preference on initial load
+      if (window.matchMedia && window.matchMedia('(prefers-color-scheme: dark)').matches) {
+        html.setAttribute('data-theme', 'dark');
+      }
+      // Check for saved preference
+      var saved = localStorage.getItem('theme');
+      if (saved) {
+        html.setAttribute('data-theme', saved);
+      }
+
+      toggle.addEventListener('click', function() {
+        var current = html.getAttribute('data-theme');
+        var next = current === 'dark' ? 'light' : 'dark';
+        if (next === 'light') {
+          html.removeAttribute('data-theme');
+        } else {
+          html.setAttribute('data-theme', 'dark');
+        }
+        localStorage.setItem('theme', next);
+      });
+
+      // ── Mobile Menu ──
+      var hamburger = document.getElementById('hamburgerBtn');
+      var mobileMenu = document.getElementById('mobileMenu');
+      hamburger.addEventListener('click', function() {
+        mobileMenu.classList.toggle('open');
+      });
+      // Close menu on link click
+      mobileMenu.querySelectorAll('a').forEach(function(link) {
+        link.addEventListener('click', function() {
+          mobileMenu.classList.remove('open');
+        });
+      });
+
+      // ── Category Filter ──
+      var pills = document.querySelectorAll('.filter-pill');
+      var cards = document.querySelectorAll('.project-card');
+
+      pills.forEach(function(pill) {
+        pill.addEventListener('click', function() {
+          var filter = this.getAttribute('data-filter');
+
+          pills.forEach(function(p) { p.classList.remove('active'); });
+          this.classList.add('active');
+
+          cards.forEach(function(card) {
+            var category = card.getAttribute('data-category');
+            if (filter === 'all' || category === filter) {
+              card.classList.remove('hidden');
+              // Re-trigger visibility if already visible
+              if (!card.classList.contains('visible')) {
+                card.classList.add('visible');
+              }
+            } else {
+              card.classList.add('hidden');
+            }
+          });
+        });
+      });
+
+      // ── Scroll Animations (IntersectionObserver) ──
+      var observer = new IntersectionObserver(function(entries) {
+        entries.forEach(function(entry) {
+          if (entry.isIntersecting) {
+            var idx = Array.from(cards).indexOf(entry.target);
+            var visibleIdx = 0;
+            // Stagger based on visible position
+            cards.forEach(function(c, i) {
+              if (i < idx && !c.classList.contains('hidden')) visibleIdx++;
+            });
+            setTimeout(function() {
+              entry.target.classList.add('visible');
+            }, visibleIdx * 80);
+            observer.unobserve(entry.target);
+          }
+        });
+      }, { threshold: 0.08, rootMargin: '0px 0px -40px 0px' });
+
+      cards.forEach(function(card) { observer.observe(card); });
+    })();
+  </script>
+
+</body>
+</html>

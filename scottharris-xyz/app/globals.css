@@ -1,0 +1,191 @@
+@import "tailwindcss";
+
+/* ── Tailwind theme mapping ── */
+@theme inline {
+  --color-primary: var(--primary);
+  --color-primary-light: var(--primary-light);
+  --color-accent: var(--accent);
+  --color-violet: var(--violet);
+  --color-bg: var(--bg);
+  --color-bg-pattern: var(--bg-pattern);
+  --color-text: var(--text);
+  --color-text-secondary: var(--text-secondary);
+  --color-card-bg: var(--card-bg);
+  --color-card-border: var(--card-border);
+  --color-glass: var(--glass);
+  --color-glass-border: var(--glass-border);
+  --color-nav-bg: var(--nav-bg);
+  --color-nav-border: var(--nav-border);
+  --color-cv-bar-bg: var(--cv-bar-bg);
+  --color-input-bg: var(--input-bg);
+  --color-input-border: var(--input-border);
+  --color-muted: var(--muted);
+  --font-sans: var(--font-sans);
+  --font-serif: var(--font-serif);
+  --font-mono: var(--font-mono);
+}
+
+@layer base {
+  /* ── Light Theme (Default) ── */
+  :root {
+    --bg: #fafaf8;
+    --bg-pattern: #eae9e4;
+    --primary: #0f766e;
+    --primary-light: #14b8a6;
+    --accent: #d97706;
+    --violet: #8b5cf6;
+    --text: #0f172a;
+    --text-secondary: #475569;
+    --card-bg: #ffffff;
+    --card-border: #e2e8f0;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.06), 0 4px 12px rgba(0,0,0,0.04);
+    --card-shadow-hover: 0 4px 12px rgba(0,0,0,0.08), 0 8px 24px rgba(0,0,0,0.06);
+    --glass: rgba(255, 255, 255, 0.8);
+    --glass-border: rgba(0, 0, 0, 0.06);
+    --nav-bg: rgba(255, 255, 255, 0.92);
+    --nav-border: rgba(15, 118, 110, 0.15);
+    --cv-bar-bg: rgba(15, 118, 110, 0.04);
+    --chat-user-bg: rgba(15, 118, 110, 0.06);
+    --chat-user-border: rgba(15, 118, 110, 0.12);
+    --chat-ai-bg: rgba(0, 0, 0, 0.02);
+    --chat-ai-border: rgba(0, 0, 0, 0.06);
+    --about-bg: rgba(15, 118, 110, 0.03);
+    --input-bg: rgba(0, 0, 0, 0.02);
+    --input-border: #e2e8f0;
+    --footer-border: rgba(15, 118, 110, 0.15);
+    --muted: rgba(71, 85, 105, 0.4);
+    --pill-active-bg: var(--primary);
+    --pill-active-text: #ffffff;
+    --pill-bg: rgba(15, 118, 110, 0.06);
+    --pill-text: var(--text-secondary);
+    --ambient-display: none;
+
+    /* ── Type scale ── */
+    --font-2xs: 0.85rem;   /* badges, pills, footnotes */
+    --font-xs: 0.95rem;    /* mono labels, small secondary text */
+    --font-sm: 1.05rem;    /* card descriptions, chat messages, inputs */
+    --font-base: 1.12rem;  /* buttons, body copy, primary content */
+    --font-md: 1.25rem;    /* card titles, nav links */
+    --font-lg: 1.5rem;     /* nav logo, sub-headings */
+    --font-xl: 1.75rem;    /* section headings */
+    --font-2xl: 2.2rem;   /* page-level headings */
+  }
+
+  /* ── Dark Theme ── */
+  [data-theme="dark"] {
+    --bg: #050a12;
+    --bg-pattern: #0f1a2e;
+    --primary: #2dd4bf;
+    --primary-light: #5eead4;
+    --accent: #f59e0b;
+    --text: #f1f5f9;
+    --text-secondary: #94a3b8;
+    --card-bg: #0f1729;
+    --card-border: #1e293b;
+    --card-shadow: 0 1px 3px rgba(0,0,0,0.3), 0 4px 12px rgba(0,0,0,0.2);
+    --card-shadow-hover: 0 4px 12px rgba(45, 212, 191, 0.06), 0 8px 24px rgba(0,0,0,0.3);
+    --glass: rgba(15, 23, 42, 0.7);
+    --glass-border: rgba(255, 255, 255, 0.06);
+    --nav-bg: rgba(10, 15, 26, 0.92);
+    --nav-border: rgba(45, 212, 191, 0.2);
+    --cv-bar-bg: rgba(45, 212, 191, 0.06);
+    --chat-user-bg: rgba(45, 212, 191, 0.08);
+    --chat-user-border: rgba(45, 212, 191, 0.15);
+    --chat-ai-bg: rgba(255, 255, 255, 0.03);
+    --chat-ai-border: rgba(255, 255, 255, 0.06);
+    --about-bg: rgba(45, 212, 191, 0.03);
+    --input-bg: rgba(255, 255, 255, 0.04);
+    --input-border: #1e293b;
+    --footer-border: rgba(45, 212, 191, 0.15);
+    --muted: rgba(148, 163, 184, 0.4);
+    --pill-active-bg: var(--primary);
+    --pill-active-text: #050a12;
+    --pill-bg: rgba(45, 212, 191, 0.08);
+    --pill-text: var(--text-secondary);
+    --ambient-display: block;
+  }
+
+  html {
+    scroll-behavior: smooth;
+  }
+
+  /* ── Base styles ── */
+  body {
+    font-family: 'Figtree', sans-serif;
+    background-color: var(--bg);
+    color: var(--text);
+    overflow-x: hidden;
+    -webkit-font-smoothing: antialiased;
+    line-height: 1.7;
+    background-image: radial-gradient(circle, var(--bg-pattern) 1px, transparent 1px);
+    background-size: 28px 28px;
+    transition: background-color 0.3s, color 0.3s;
+  }
+
+  a {
+    color: var(--primary);
+    text-decoration: none;
+    transition: color 0.2s;
+  }
+  a:hover {
+    color: var(--primary-light);
+  }
+
+  /* ── Font utility classes ── */
+  .serif {
+    font-family: 'Instrument Serif', serif;
+  }
+  .mono {
+    font-family: 'JetBrains Mono', monospace;
+  }
+
+  /* ── Keyframes ── */
+  @keyframes fadeUp {
+    from { opacity: 0; transform: translateY(20px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes pulse {
+    0%, 100% { transform: scale(1); opacity: 0.7; }
+    50% { transform: scale(1.4); opacity: 1; }
+  }
+
+  @keyframes msgIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+  }
+
+  @keyframes drift {
+    0%   { transform: translate(0, 0) scale(1); }
+    33%  { transform: translate(3%, -2%) scale(1.03); }
+    66%  { transform: translate(-2%, 3%) scale(0.97); }
+    100% { transform: translate(1%, -1%) scale(1.01); }
+  }
+
+  @keyframes bounce {
+    0%, 100% { transform: translateY(0); }
+    50% { transform: translateY(8px); }
+  }
+
+  /* ── Social link hover ── */
+  .social-link {
+    transition: color 0.2s;
+  }
+  .social-link:hover {
+    color: var(--primary) !important;
+  }
+
+  /* ── Dark-mode chat panel glass effect ── */
+  [data-theme="dark"] .chat-panel-glass {
+    background: var(--glass) !important;
+    backdrop-filter: blur(16px);
+    -webkit-backdrop-filter: blur(16px);
+  }
+}
+
+/* ── Print styles ── */
+@media print {
+  .chat-panel, nav, .scroll-indicator, .ambient-bg {
+    display: none !important;
+  }
+}

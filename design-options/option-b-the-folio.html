@@ -1,0 +1,515 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="utf-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1" />
+  <title>Scott C. Harris, PhD — Computational Neuroscientist</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Syne:wght@400;600;700;800&family=Crimson+Pro:ital,wght@0,300;0,400;0,600;1,300;1,400;1,600&display=swap" rel="stylesheet" />
+  <style>
+    /* ── Reset & Base ──────────────────────────────────────── */
+    *, *::before, *::after { margin: 0; padding: 0; box-sizing: border-box; }
+    html { scroll-behavior: smooth; font-size: 16px; }
+    body {
+      font-family: 'Crimson Pro', Georgia, serif;
+      color: #1a1a1a;
+      background-color: #faf7f2;
+      background-image: url("data:image/svg+xml,%3Csvg viewBox='0 0 256 256' xmlns='http://www.w3.org/2000/svg'%3E%3Cfilter id='n'%3E%3CfeTurbulence type='fractalNoise' baseFrequency='0.85' numOctaves='4' stitchTiles='stitch'/%3E%3C/filter%3E%3Crect width='100%25' height='100%25' filter='url(%23n)' opacity='0.03'/%3E%3C/svg%3E");
+      -webkit-font-smoothing: antialiased;
+      -moz-osx-font-smoothing: grayscale;
+      line-height: 1.7;
+    }
+    a { color: inherit; text-decoration: none; }
+    img { display: block; max-width: 100%; }
+
+    /* ── Utility ───────────────────────────────────────────── */
+    .container { max-width: 1200px; margin: 0 auto; padding: 0 2.5rem; }
+    .copper { color: #b8860b; }
+    .reveal { opacity: 0; transform: translateY(24px); transition: opacity 0.7s ease, transform 0.7s ease; }
+    .reveal.visible { opacity: 1; transform: translateY(0); }
+
+    /* ── Navigation ────────────────────────────────────────── */
+    nav {
+      position: sticky; top: 0; z-index: 100;
+      background: rgba(250, 247, 242, 0.92);
+      backdrop-filter: blur(10px);
+      -webkit-backdrop-filter: blur(10px);
+      border-bottom: 1px solid #b8860b;
+      transition: box-shadow 0.3s ease;
+    }
+    nav.scrolled { box-shadow: 0 1px 12px rgba(26, 26, 26, 0.06); }
+    nav .container {
+      display: flex; align-items: center; justify-content: space-between;
+      height: 64px;
+    }
+    nav .logo {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 0.9rem; letter-spacing: 0.15em; text-transform: uppercase;
+      color: #1a3c34;
+    }
+    nav ul { list-style: none; display: flex; gap: 2.2rem; }
+    nav ul li a {
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 1.05rem; color: #6b6560;
+      position: relative; transition: color 0.3s ease;
+    }
+    nav ul li a::after {
+      content: ''; position: absolute; bottom: -2px; left: 0;
+      width: 0; height: 1px; background: #b8860b;
+      transition: width 0.35s ease;
+    }
+    nav ul li a:hover { color: #1a3c34; }
+    nav ul li a:hover::after { width: 100%; }
+
+    /* ── Hero ──────────────────────────────────────────────── */
+    .hero {
+      min-height: 100vh; display: flex; flex-direction: column;
+      justify-content: center; padding: 100px 0 60px;
+    }
+    .hero-text { padding-bottom: 3rem; }
+    .hero-title {
+      font-family: 'Syne', sans-serif; font-weight: 800;
+      font-size: 6.5rem; line-height: 0.95; color: #1a3c34;
+      letter-spacing: -0.02em;
+    }
+    .hero-title span {
+      display: block;
+      opacity: 0; transform: translateY(40px);
+      animation: heroFadeUp 0.8s ease forwards;
+    }
+    .hero-title span:nth-child(2) { animation-delay: 0.12s; }
+    .hero-rule {
+      width: 80px; height: 2px; background: #b8860b;
+      margin: 2rem 0; opacity: 0;
+      animation: heroFadeUp 0.8s ease 0.3s forwards;
+    }
+    .hero-subtitle {
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 1.35rem; color: #6b6560; max-width: 520px;
+      opacity: 0; animation: heroFadeUp 0.8s ease 0.45s forwards;
+    }
+
+    @keyframes heroFadeUp {
+      to { opacity: 1; transform: translateY(0); }
+    }
+
+    /* ── Chat Panel ────────────────────────────────────────── */
+    .chat-intro {
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 1.1rem; color: #6b6560; margin-bottom: 1.2rem;
+      opacity: 0; animation: heroFadeUp 0.8s ease 0.6s forwards;
+    }
+    .chat-panel {
+      background: #fff;
+      border-top: 2px solid #b8860b;
+      box-shadow: 0 4px 24px rgba(107, 101, 96, 0.08);
+      max-width: 680px; overflow: hidden;
+      opacity: 0; animation: heroFadeUp 0.8s ease 0.7s forwards;
+    }
+    .chat-messages { padding: 2rem 2rem 1rem; display: flex; flex-direction: column; gap: 1.4rem; }
+    .chat-msg { max-width: 92%; }
+    .chat-msg.visitor .chat-label {
+      font-family: 'Syne', sans-serif; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: #b8860b; margin-bottom: 0.3rem;
+    }
+    .chat-msg.ai .chat-label {
+      font-family: 'Syne', sans-serif; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.1em;
+      color: #1a3c34; margin-bottom: 0.3rem;
+    }
+    .chat-msg p {
+      font-size: 1rem; line-height: 1.65; color: #1a1a1a;
+    }
+    .chat-msg.visitor p { font-style: italic; color: #6b6560; }
+    .chat-msg { opacity: 0; transform: translateY(12px); animation: chatIn 0.5s ease forwards; }
+    .chat-msg:nth-child(1) { animation-delay: 0.9s; }
+    .chat-msg:nth-child(2) { animation-delay: 1.2s; }
+    .chat-msg:nth-child(3) { animation-delay: 1.6s; }
+    .chat-msg:nth-child(4) { animation-delay: 1.9s; }
+    @keyframes chatIn { to { opacity: 1; transform: translateY(0); } }
+
+    .chat-input-wrap {
+      display: flex; align-items: center;
+      border-top: 1px solid rgba(107, 101, 96, 0.12);
+      padding: 0;
+    }
+    .chat-input-wrap input {
+      flex: 1; border: none; outline: none; background: transparent;
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 1rem; padding: 1.1rem 1.5rem; color: #1a1a1a;
+    }
+    .chat-input-wrap input::placeholder { color: #b0aaa4; }
+    .chat-input-wrap button {
+      border: none; background: #b8860b; color: #faf7f2;
+      font-family: 'Syne', sans-serif; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.12em;
+      padding: 1.1rem 1.8rem; cursor: pointer;
+      transition: background 0.3s ease;
+    }
+    .chat-input-wrap button:hover { background: #9a7209; }
+
+    /* ── Section Titles ────────────────────────────────────── */
+    .section-heading {
+      font-family: 'Syne', sans-serif; font-weight: 700;
+      font-size: 3.2rem; color: #1a3c34; margin-bottom: 0.6rem;
+    }
+    .section-rule { width: 50px; height: 2px; background: #b8860b; margin-bottom: 3.5rem; }
+
+    /* ── Featured Work ─────────────────────────────────────── */
+    .work { padding: 8rem 0; }
+    .work-grid {
+      display: grid;
+      grid-template-columns: repeat(3, 1fr);
+      gap: 1.8rem;
+    }
+    .work-card {
+      background: #fff; padding: 2.4rem;
+      box-shadow: 0 2px 16px rgba(107, 101, 96, 0.06);
+      display: flex; flex-direction: column; justify-content: space-between;
+      transition: transform 0.35s ease, box-shadow 0.35s ease;
+    }
+    .work-card:hover {
+      transform: translateY(-4px);
+      box-shadow: 0 8px 30px rgba(107, 101, 96, 0.1);
+    }
+    .work-card.dark {
+      background: #1a3c34; color: #faf7f2;
+      box-shadow: 0 2px 16px rgba(26, 60, 52, 0.15);
+    }
+    .work-card.dark:hover { box-shadow: 0 8px 30px rgba(26, 60, 52, 0.22); }
+    .work-card.dark .card-cat { color: #b8860b; }
+    .work-card.dark .card-desc { color: rgba(250, 247, 242, 0.7); }
+    .work-card.dark .card-link { color: #b8860b; }
+    .work-card.tall { grid-row: span 2; }
+    .card-cat {
+      font-family: 'Syne', sans-serif; font-size: 0.7rem;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      color: #b8860b; margin-bottom: 1rem;
+    }
+    .card-title {
+      font-family: 'Crimson Pro', serif; font-weight: 600;
+      font-size: 1.45rem; line-height: 1.3; margin-bottom: 0.8rem;
+    }
+    .card-desc {
+      font-size: 1rem; color: #6b6560; line-height: 1.6;
+      margin-bottom: 1.5rem; flex: 1;
+    }
+    .card-link {
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 0.95rem; color: #b8860b;
+      position: relative; display: inline-block;
+    }
+    .card-link::after {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 0; height: 1px; background: #b8860b;
+      transition: width 0.35s ease;
+    }
+    .card-link:hover::after { width: 100%; }
+
+    /* ── About ─────────────────────────────────────────────── */
+    .about {
+      background: #1a3c34; color: #faf7f2;
+      padding: 7rem 0;
+    }
+    .about-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 5rem; align-items: start; }
+    .about-quote {
+      font-family: 'Crimson Pro', serif; font-style: italic;
+      font-size: 2rem; line-height: 1.45; color: rgba(250, 247, 242, 0.9);
+      border-left: 2px solid #b8860b; padding-left: 2rem;
+    }
+    .about-bio p {
+      font-size: 1.1rem; line-height: 1.8;
+      color: rgba(250, 247, 242, 0.75); margin-bottom: 1.2rem;
+    }
+    .about-bio p:first-child { color: rgba(250, 247, 242, 0.9); }
+
+    /* ── Contact ───────────────────────────────────────────── */
+    .contact { padding: 7rem 0; text-align: center; }
+    .contact-links {
+      font-family: 'Crimson Pro', serif; font-size: 1.15rem;
+      color: #6b6560; margin: 2rem 0 2.5rem;
+    }
+    .contact-links a {
+      color: #1a3c34; position: relative;
+      transition: color 0.3s ease;
+    }
+    .contact-links a::after {
+      content: ''; position: absolute; bottom: -1px; left: 0;
+      width: 0; height: 1px; background: #b8860b;
+      transition: width 0.35s ease;
+    }
+    .contact-links a:hover::after { width: 100%; }
+    .contact-links span { margin: 0 0.8rem; color: #b0aaa4; }
+    .btn-cv {
+      display: inline-block;
+      font-family: 'Syne', sans-serif; font-size: 0.75rem;
+      text-transform: uppercase; letter-spacing: 0.14em;
+      border: 1px solid #b8860b; color: #1a3c34;
+      padding: 0.9rem 2.4rem;
+      transition: background 0.35s ease, color 0.35s ease;
+    }
+    .btn-cv:hover { background: #b8860b; color: #faf7f2; }
+
+    /* ── Footer ────────────────────────────────────────────── */
+    footer {
+      border-top: 1px solid #b8860b;
+      padding: 2.2rem 0; text-align: center;
+      font-size: 0.9rem; color: #6b6560;
+    }
+
+    /* ── Responsive ────────────────────────────────────────── */
+    @media (max-width: 1024px) {
+      .hero-title { font-size: 4.2rem; }
+      .section-heading { font-size: 2.6rem; }
+      .work-grid { grid-template-columns: repeat(2, 1fr); }
+      .work-card.tall { grid-row: span 1; }
+    }
+    @media (max-width: 768px) {
+      .container { padding: 0 1.5rem; }
+      .hero { padding: 80px 0 40px; }
+      .hero-title { font-size: 3.2rem; }
+      .hero-subtitle { font-size: 1.15rem; }
+      .chat-panel { max-width: 100%; }
+      .work-grid { grid-template-columns: 1fr; }
+      .about-grid { grid-template-columns: 1fr; gap: 2.5rem; }
+      .about-quote { font-size: 1.6rem; }
+      nav ul { gap: 1.4rem; }
+    }
+    @media (max-width: 480px) {
+      .hero-title { font-size: 2.4rem; }
+      .section-heading { font-size: 2rem; }
+      .hero-subtitle { font-size: 1.05rem; }
+      .chat-messages { padding: 1.2rem; }
+      .work-card { padding: 1.6rem; }
+      nav .container { padding: 0 1rem; }
+      nav ul { gap: 1rem; }
+      nav ul li a { font-size: 0.95rem; }
+      .contact-links a { display: block; margin: 0.6rem 0; }
+      .contact-links span { display: none; }
+      .about { padding: 4.5rem 0; }
+      .work { padding: 5rem 0; }
+      .contact { padding: 4.5rem 0; }
+    }
+  </style>
+</head>
+<body>
+
+  <!-- ── Navigation ──────────────────────────────────────── -->
+  <nav id="nav">
+    <div class="container">
+      <div class="logo">Scott C. Harris</div>
+      <ul>
+        <li><a href="#work">Work</a></li>
+        <li><a href="#about">About</a></li>
+        <li><a href="#contact">CV</a></li>
+        <li><a href="#contact">Connect</a></li>
+      </ul>
+    </div>
+  </nav>
+
+  <!-- ── Hero ────────────────────────────────────────────── -->
+  <section class="hero">
+    <div class="container">
+      <div class="hero-text">
+        <h1 class="hero-title">
+          <span>Computational</span>
+          <span>Neuroscientist</span>
+        </h1>
+        <div class="hero-rule"></div>
+        <p class="hero-subtitle">Researching vision. Building tools. Writing about consciousness.</p>
+      </div>
+
+      <p class="chat-intro">Have a question? Ask Scott's AI assistant.</p>
+
+      <div class="chat-panel">
+        <div class="chat-messages">
+          <div class="chat-msg visitor">
+            <div class="chat-label">Visitor</div>
+            <p>Tell me about Scott's research background</p>
+          </div>
+          <div class="chat-msg ai">
+            <div class="chat-label">AI Assistant</div>
+            <p>Scott's work spans computational neuroscience and vision science. His research published in eLife explores how the retina stabilizes images, and he's investigated how glaucoma alters neural circuits. In 2024, he received the prestigious Copenhagen Award. His approach combines rigorous experimental methods with custom-built software tools.</p>
+          </div>
+          <div class="chat-msg visitor">
+            <div class="chat-label">Visitor</div>
+            <p>What software has he built?</p>
+          </div>
+          <div class="chat-msg ai">
+            <div class="chat-label">AI Assistant</div>
+            <p>Scott has developed three major tools: Bassoon, a psychophysics stimulus delivery platform; an Electrophysiology Pipeline for neural data analysis; and Calibrate Light, a GUI for photoisomerization calculations. Each was built to solve real problems in his research workflow.</p>
+          </div>
+        </div>
+        <div class="chat-input-wrap">
+          <input type="text" placeholder="Ask about Scott..." />
+          <button>Send</button>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Featured Work ───────────────────────────────────── -->
+  <section class="work" id="work">
+    <div class="container">
+      <h2 class="section-heading reveal">Selected Work</h2>
+      <div class="section-rule reveal"></div>
+
+      <div class="work-grid">
+
+        <div class="work-card tall dark reveal">
+          <div>
+            <div class="card-cat">Science</div>
+            <h3 class="card-title">Retinal Image Stabilization</h3>
+            <p class="card-desc">Published in eLife, this research reveals how retinal circuits actively stabilize visual input, challenging long-held assumptions about passive image formation in the eye.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Software</div>
+            <h3 class="card-title">Bassoon</h3>
+            <p class="card-desc">A psychophysics stimulus delivery platform designed for precise control of visual experiments and real-time data acquisition.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Writing</div>
+            <h3 class="card-title">Confronting Consciousness</h3>
+            <p class="card-desc">A philosophical exploration on Medium examining what computational neuroscience can and cannot tell us about subjective experience.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Science</div>
+            <h3 class="card-title">Copenhagen Award 2024</h3>
+            <p class="card-desc">Recognized with the prestigious Copenhagen Award for outstanding contributions to vision science and computational approaches to understanding neural circuits.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card dark reveal">
+          <div>
+            <div class="card-cat">Software</div>
+            <h3 class="card-title">Electrophysiology Pipeline</h3>
+            <p class="card-desc">An end-to-end pipeline for processing, analyzing, and visualizing neural electrophysiology recordings with automated spike sorting.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Science</div>
+            <h3 class="card-title">Glaucoma Circuit Analysis</h3>
+            <p class="card-desc">Investigating how glaucoma progressively rewires retinal neural circuits, with implications for early diagnosis and treatment strategies.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Software</div>
+            <h3 class="card-title">Calibrate Light</h3>
+            <p class="card-desc">A GUI application for calculating photoisomerization rates, making precise light calibration accessible to vision researchers.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card dark reveal">
+          <div>
+            <div class="card-cat">Interactive</div>
+            <h3 class="card-title">Viral Spread Simulator</h3>
+            <p class="card-desc">An interactive browser-based simulation demonstrating epidemic dynamics, parameter sensitivity, and the mechanics of contagion spread.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Writing</div>
+            <h3 class="card-title">Finding Free Will</h3>
+            <p class="card-desc">A Medium essay wrestling with determinism, agency, and what modern neuroscience suggests about the nature of human choice.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+        <div class="work-card reveal">
+          <div>
+            <div class="card-cat">Interactive</div>
+            <h3 class="card-title">Interest Calculator</h3>
+            <p class="card-desc">A clean, functional tool for computing compound interest over time with adjustable parameters and real-time visualization.</p>
+          </div>
+          <a href="#" class="card-link">Read more &rarr;</a>
+        </div>
+
+      </div>
+    </div>
+  </section>
+
+  <!-- ── About ───────────────────────────────────────────── -->
+  <section class="about" id="about">
+    <div class="container">
+      <div class="about-grid">
+        <blockquote class="about-quote reveal">
+          &ldquo;The intersection of neuroscience and computation is where understanding begins.&rdquo;
+        </blockquote>
+        <div class="about-bio reveal">
+          <p>Scott C. Harris holds a PhD in computational neuroscience and has dedicated his career to understanding how the visual system processes and stabilizes the world we see. His research, published in eLife and recognized with the 2024 Copenhagen Award, bridges experimental neuroscience and quantitative modeling.</p>
+          <p>Beyond the lab, Scott builds research software that other scientists rely on daily. Bassoon enables precise psychophysics experiments, his Electrophysiology Pipeline streamlines neural data analysis, and Calibrate Light simplifies complex photometric calculations.</p>
+          <p>He also writes long-form essays exploring consciousness, free will, and the philosophical implications of brain science. His work lives at the boundary of what we can measure and what we struggle to explain.</p>
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Contact / CV ────────────────────────────────────── -->
+  <section class="contact" id="contact">
+    <div class="container">
+      <h2 class="section-heading reveal">Get in Touch</h2>
+      <div class="section-rule reveal" style="margin-left:auto;margin-right:auto;"></div>
+      <div class="contact-links reveal">
+        <a href="#">LinkedIn</a><span>&middot;</span><a href="#">GitHub</a><span>&middot;</span><a href="#">Google Scholar</a><span>&middot;</span><a href="#">Medium</a>
+      </div>
+      <div class="reveal">
+        <a href="#" class="btn-cv">Download CV</a>
+      </div>
+    </div>
+  </section>
+
+  <!-- ── Footer ──────────────────────────────────────────── -->
+  <footer>
+    <div class="container">&copy; 2026 Scott C. Harris, PhD</div>
+  </footer>
+
+  <!-- ── Scripts ─────────────────────────────────────────── -->
+  <script>
+    // Nav scroll effect
+    const nav = document.getElementById('nav');
+    window.addEventListener('scroll', () => {
+      nav.classList.toggle('scrolled', window.scrollY > 20);
+    });
+
+    // Reveal on scroll (Intersection Observer)
+    const revealEls = document.querySelectorAll('.reveal');
+    const observer = new IntersectionObserver((entries) => {
+      entries.forEach((entry, i) => {
+        if (entry.isIntersecting) {
+          // stagger siblings slightly
+          const siblings = Array.from(entry.target.parentElement.querySelectorAll('.reveal'));
+          const idx = siblings.indexOf(entry.target);
+          entry.target.style.transitionDelay = `${idx * 0.08}s`;
+          entry.target.classList.add('visible');
+          observer.unobserve(entry.target);
+        }
+      });
+    }, { threshold: 0.12 });
+    revealEls.forEach(el => observer.observe(el));
+  </script>
+</body>
+</html>

@@ -1,0 +1,9 @@
+{
+  "permissions": {
+    "allow": [
+      "Bash(cd \"C:/Users/mrsco/Documents/Scott Local/code/webDevelopment/scottharris.xyz/scottharris-xyz\" && mkdir -p components/ChatBot components/Projects data lib app/api/chat app/cv public/media public/apps)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__a23ea326._.css\" 2>/dev/null | wc -c)",
+      "Bash(curl -s \"http://localhost:3000/_next/static/chunks/%5Broot-of-the-server%5D__a23ea326._.css\" 2>/dev/null | head -200)"
+    ]
+  }
+}
