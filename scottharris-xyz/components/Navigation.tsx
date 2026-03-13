@@ -5,7 +5,7 @@ import Link from "next/link";
 import { useTheme } from "@/components/ThemeProvider";
 
 const navLinks = [
-  { label: "Chat", href: "/#chat" },
+  { label: "Chat", href: "/" },
   { label: "Projects", href: "/#projects" },
   { label: "CV", href: "/cv" },
 ];
