@@ -4,7 +4,7 @@ import { bio } from "@/data/bio";
 export default function Hero({ children }: { children?: React.ReactNode }) {
   return (
     <section
-      className="min-h-screen lg:h-screen flex flex-col items-center justify-between text-center relative z-[1]"
+      className="min-h-screen flex flex-col items-center justify-between text-center relative z-[1]"
       style={{ padding: "clamp(80px, 9vh, 110px) 2rem 12px" }}
     >
       {/* Name + Blurb with headshot */}

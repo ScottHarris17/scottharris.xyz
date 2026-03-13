@@ -26,6 +26,12 @@ const figtree = Figtree({
 export const metadata: Metadata = {
   title: "Scott C. Harris, PhD — Computational Neuroscientist & AI Engineer",
   description: "Portfolio of Scott C. Harris, PhD — Computational Neuroscientist & AI Engineer",
+  icons: {
+    icon: [
+      { url: "/favicon.png", type: "image/png" },
+      { url: "/favicon.svg", type: "image/svg+xml" },
+    ],
+  },
 };
 
 export default function RootLayout({
