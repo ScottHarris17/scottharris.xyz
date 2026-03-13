@@ -311,6 +311,9 @@ export default function ChatPanel() {
                   role={msg.role}
                   content={msg.content}
                   delay={0}
+                  voiceMode={voiceMode}
+                  isSpeaking={isSpeaking}
+                  onPlayVoice={msg.role === "assistant" && msg.content ? () => speakText(msg.content) : undefined}
                 />
               ),
             )}
@@ -392,7 +395,7 @@ export default function ChatPanel() {
                 {voiceMode && <path d="M15.54 8.46a5 5 0 0 1 0 7.07" />}
               </svg>
             )}
-            {voiceMode ? (isSpeaking ? "Speaking..." : "Voice On") : "Let Me Speak!"}
+            {voiceMode ? (isSpeaking ? "Speaking..." : "Voice On") : "Hear Me Speak"}
           </button>
         </div>
         <span

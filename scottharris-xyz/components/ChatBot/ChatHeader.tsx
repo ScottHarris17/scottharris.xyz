@@ -39,7 +39,7 @@ export default function ChatHeader() {
           marginLeft: "0.25rem",
         }}
       >
-        &mdash; Ask me anything
+        &mdash; Ask Me About Myself
       </span>
     </div>
   );
