@@ -40,6 +40,31 @@ export default function ChatPanel() {
   const voiceModeRef = useRef(voiceMode);
   voiceModeRef.current = voiceMode;
 
+  // ── Session ID for conversation persistence ────────────────────────
+  const sessionIdRef = useRef<string>("");
+  useEffect(() => {
+    let id = sessionStorage.getItem("chat_session_id");
+    if (!id) {
+      id = crypto.randomUUID();
+      sessionStorage.setItem("chat_session_id", id);
+    }
+    sessionIdRef.current = id;
+  }, []);
+
+  const saveConversation = useCallback((msgs: Message[]) => {
+    if (!sessionIdRef.current || msgs.length === 0) return;
+    fetch("/api/chat/save", {
+      method: "POST",
+      headers: { "Content-Type": "application/json" },
+      body: JSON.stringify({
+        sessionId: sessionIdRef.current,
+        messages: msgs,
+      }),
+    }).catch(() => {
+      // Silent fail — saving is best-effort
+    });
+  }, []);
+
   // ── Auto-scroll ──────────────────────────────────────────────────────
   const scrollToBottom = useCallback(() => {
     const container = messagesContainerRef.current;
@@ -204,6 +229,10 @@ export default function ChatPanel() {
 
         setIsStreaming(false);
 
+        // Save conversation to Supabase
+        const finalMessages = messagesRef.current;
+        saveConversation(finalMessages);
+
         // If voice mode is on, speak the completed response
         if (voiceModeRef.current && accumulated) {
           speakText(accumulated);
@@ -223,7 +252,7 @@ export default function ChatPanel() {
         });
       }
     },
-    [isLive, isStreaming, speakText],
+    [isLive, isStreaming, speakText, saveConversation],
   );
 
   // ── Typing indicator ───────────────────────────────────────────────
