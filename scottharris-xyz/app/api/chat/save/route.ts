@@ -9,6 +9,9 @@ export async function POST(request: NextRequest) {
     }
 
     const { sessionId, messages, voiceMode } = await request.json();
+    const ip = request.headers.get("x-forwarded-for")?.split(",")[0]?.trim()
+      || request.headers.get("x-real-ip")
+      || "unknown";
 
     if (!sessionId || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -22,6 +25,7 @@ export async function POST(request: NextRequest) {
           messages,
           message_count: messages.length,
           voice_mode: !!voiceMode,
+          ip_address: ip,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "id" }
