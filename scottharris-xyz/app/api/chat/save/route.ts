@@ -13,6 +13,12 @@ export async function POST(request: NextRequest) {
       || request.headers.get("x-real-ip")
       || "unknown";
 
+    // Vercel provides geo headers automatically
+    const city = request.headers.get("x-vercel-ip-city") || null;
+    const region = request.headers.get("x-vercel-ip-country-region") || null;
+    const country = request.headers.get("x-vercel-ip-country") || null;
+    const location = [city, region, country].filter(Boolean).join(", ") || null;
+
     if (!sessionId || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
     }
@@ -26,6 +32,7 @@ export async function POST(request: NextRequest) {
           message_count: messages.length,
           voice_mode: !!voiceMode,
           ip_address: ip,
+          location,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "id" }
