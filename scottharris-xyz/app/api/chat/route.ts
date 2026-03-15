@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
       messages: fullMessages,
       tools: TOOL_DEFINITIONS,
       stream: false, // First call non-streaming to handle tools
-      max_tokens: 500,
+      max_completion_tokens: 500,
     });
 
     let message = response.choices[0]?.message;
@@ -160,10 +160,10 @@ export async function POST(request: NextRequest) {
 
       // Get final response with tool results (streaming)
       const stream = await openai.chat.completions.create({
-        model: "gpt-4o",
+        model: "gpt-5-mini-2025-08-07",
         messages: fullMessages,
         stream: true,
-        max_tokens: 500,
+        max_completion_tokens: 500,
       });
 
       // Return streaming response
@@ -195,10 +195,10 @@ export async function POST(request: NextRequest) {
     // No tool calls — stream the response directly
     // Re-do with streaming
     const stream = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-5-mini-2025-08-07",
       messages: fullMessages,
       stream: true,
-      max_tokens: 500,
+      max_completion_tokens: 500,
     });
 
     const encoder = new TextEncoder();
