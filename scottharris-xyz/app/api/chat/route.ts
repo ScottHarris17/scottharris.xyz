@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     // Initial completion (may include tool calls)
     const openai = getOpenAI();
     let response = await openai.chat.completions.create({
-      model: "gpt-4o",
+      model: "gpt-5-mini-2025-08-07",
       messages: fullMessages,
       tools: TOOL_DEFINITIONS,
       stream: false, // First call non-streaming to handle tools
