@@ -14,7 +14,8 @@ export async function POST(request: NextRequest) {
       || "unknown";
 
     // Vercel provides geo headers automatically
-    const city = request.headers.get("x-vercel-ip-city") || null;
+    const rawCity = request.headers.get("x-vercel-ip-city");
+    const city = rawCity ? decodeURIComponent(rawCity) : null;
     const region = request.headers.get("x-vercel-ip-country-region") || null;
     const country = request.headers.get("x-vercel-ip-country") || null;
     const location = [city, region, country].filter(Boolean).join(", ") || null;
