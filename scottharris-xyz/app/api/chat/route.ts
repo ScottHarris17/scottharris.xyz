@@ -133,7 +133,7 @@ export async function POST(request: NextRequest) {
       messages: fullMessages,
       tools: TOOL_DEFINITIONS,
       stream: false, // First call non-streaming to handle tools
-      max_completion_tokens: 500,
+      max_output_tokens: 1000,
     });
 
     let message = response.choices[0]?.message;
@@ -163,7 +163,7 @@ export async function POST(request: NextRequest) {
         model: "gpt-5-mini-2025-08-07",
         messages: fullMessages,
         stream: true,
-        max_completion_tokens: 500,
+        max_output_tokens: 1000,
       });
 
       // Return streaming response
@@ -198,7 +198,7 @@ export async function POST(request: NextRequest) {
       model: "gpt-5-mini-2025-08-07",
       messages: fullMessages,
       stream: true,
-      max_completion_tokens: 500,
+      max_output_tokens: 1000,
     });
 
     const encoder = new TextEncoder();
