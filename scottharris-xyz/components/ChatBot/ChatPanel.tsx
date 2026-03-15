@@ -59,6 +59,7 @@ export default function ChatPanel() {
       body: JSON.stringify({
         sessionId: sessionIdRef.current,
         messages: msgs,
+        voiceMode: voiceModeRef.current,
       }),
     }).catch(() => {
       // Silent fail — saving is best-effort

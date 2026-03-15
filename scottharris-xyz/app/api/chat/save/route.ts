@@ -8,7 +8,7 @@ export async function POST(request: NextRequest) {
       return NextResponse.json({ error: "Not configured" }, { status: 503 });
     }
 
-    const { sessionId, messages } = await request.json();
+    const { sessionId, messages, voiceMode } = await request.json();
 
     if (!sessionId || !Array.isArray(messages) || messages.length === 0) {
       return NextResponse.json({ error: "Invalid payload" }, { status: 400 });
@@ -21,6 +21,7 @@ export async function POST(request: NextRequest) {
           id: sessionId,
           messages,
           message_count: messages.length,
+          voice_mode: !!voiceMode,
           updated_at: new Date().toISOString(),
         },
         { onConflict: "id" }
