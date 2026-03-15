@@ -129,7 +129,7 @@ export async function POST(request: NextRequest) {
     // Initial completion (may include tool calls)
     const openai = getOpenAI();
     let response = await openai.chat.completions.create({
-      model: "gpt-5-mini-2025-08-07",
+      model: "gpt-4o",
       messages: fullMessages,
       tools: TOOL_DEFINITIONS,
       stream: false, // First call non-streaming to handle tools
@@ -160,7 +160,7 @@ export async function POST(request: NextRequest) {
 
       // Get final response with tool results (streaming)
       const stream = await openai.chat.completions.create({
-        model: "gpt-5-mini-2025-08-07",
+        model: "gpt-4o",
         messages: fullMessages,
         stream: true,
   
@@ -195,7 +195,7 @@ export async function POST(request: NextRequest) {
     // No tool calls — stream the response directly
     // Re-do with streaming
     const stream = await openai.chat.completions.create({
-      model: "gpt-5-mini-2025-08-07",
+      model: "gpt-4o",
       messages: fullMessages,
       stream: true,
 
