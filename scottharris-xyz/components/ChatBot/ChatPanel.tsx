@@ -17,6 +17,10 @@ const DEMO_MESSAGES: {
   },
 ];
 
+// Voice (TTS) toggle is hidden for now. All voice logic remains in place —
+// flip this to true to re-enable the "Hear Me Speak" button.
+const SHOW_VOICE_TOGGLE = false;
+
 interface Message {
   role: "user" | "assistant";
   content: string;
@@ -382,6 +386,7 @@ export default function ChatPanel() {
           padding: "0.65rem 1.5rem 0.85rem",
         }}
       >
+        {SHOW_VOICE_TOGGLE && (
         <div style={{ position: "relative", display: "inline-flex" }}>
           <button
             onClick={() => {
@@ -428,6 +433,7 @@ export default function ChatPanel() {
             {voiceMode ? (isSpeaking ? "Speaking..." : "Voice On") : "Hear Me Speak"}
           </button>
         </div>
+        )}
         <span
           style={{
             fontSize: "var(--font-2xs)",

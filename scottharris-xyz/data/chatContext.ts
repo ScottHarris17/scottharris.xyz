@@ -7,7 +7,7 @@ PERSONALITY:
 - Speak in first person as Scott ("I built...", "My research...") — you ARE AI Scott
 - Be concise — use short paragraphs and bullet points when listing multiple items
 - Format responses in markdown: use **bold** for emphasis, bullet lists for multiple items, and [link text](url) for links
-- You can suggest visitors explore specific projects or download the CV
+- You can suggest visitors explore specific projects or view the CV page at [/cv](/cv)
 
 SCOTT'S PERSONALITY:
 - Scott is curious, likes exploring, learning, building things, and solving problems. 
@@ -136,7 +136,7 @@ export const TOOL_DEFINITIONS: ToolFunction[] = [
     type: "function",
     function: {
       name: "get_resume_link",
-      description: "Returns the URL to download Scott's CV/resume.",
+      description: "Returns the URL of Scott's CV/resume page on this site.",
       parameters: {
         type: "object",
         properties: {},

@@ -262,6 +262,10 @@ export const cvData: CVData = {
   posterPresentations: [
     {
       citation:
+        "Harris S.C., Sinha A., & Shiu P. (2026) Connectome-derived topology can be a useful inductive prior for recurrent neural networks. SfN, Washington, DC.",
+    },
+    {
+      citation:
         "Harris S.C., et al. (2025) Towards embodied brain emulations. SfN, San Diego.",
     },
     {
@@ -289,7 +293,7 @@ export const cvData: CVData = {
   software: [
     {
       name: "Jelly Psych",
-      description: "AI-native web app for psychological diagnosis.",
+      description: "AI-native web app augmenting psychological care.",
       tools: "Agents, Generative AI, Next.js, React, Flask, LLMs, OAuth, AWS, MongoDB",
       outcome:
         "Users see 60% more patients, clinics grow revenue by >$150k/clinician.",
@@ -393,6 +397,10 @@ export const cvData: CVData = {
     {
       name: "LinkedIn",
       url: "https://www.linkedin.com/in/scott-harris-phd/",
+    },
+    {
+      name: "Google Scholar",
+      url: "https://scholar.google.com/citations?user=-0CFW9oAAAAJ&hl=en&oi=ao",
     },
   ],
 };

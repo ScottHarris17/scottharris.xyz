@@ -147,18 +147,6 @@ export default function CvPage() {
               {cvData.name}
             </h1>
           </div>
-          <div style={{ display: "flex", flexWrap: "wrap", gap: "0.5rem", alignItems: "center" }}>
-            <a href="/media/CV_ScottHarris.pdf" target="_blank" rel="noopener noreferrer" className="cv-download-btn"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1.2rem", fontSize: "var(--font-xs)", fontWeight: 600, borderRadius: "8px", background: "var(--primary)", color: "#fff", textDecoration: "none", transition: "background 0.2s, transform 0.2s, box-shadow 0.2s", boxShadow: "0 2px 8px rgba(15,118,110,0.25)" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              PDF
-            </a>
-            <a href="/api/cv/download" className="cv-download-btn"
-              style={{ display: "inline-flex", alignItems: "center", gap: "0.5rem", padding: "0.5rem 1.2rem", fontSize: "var(--font-xs)", fontWeight: 600, borderRadius: "8px", background: "var(--primary)", color: "#fff", textDecoration: "none", transition: "background 0.2s, transform 0.2s, box-shadow 0.2s", boxShadow: "0 2px 8px rgba(15,118,110,0.25)" }}>
-              <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" strokeWidth="2" strokeLinecap="round" strokeLinejoin="round"><path d="M21 15v4a2 2 0 0 1-2 2H5a2 2 0 0 1-2-2v-4"/><polyline points="7 10 12 15 17 10"/><line x1="12" y1="15" x2="12" y2="3"/></svg>
-              DOCX
-            </a>
-          </div>
         </div>
         <div
           style={{
@@ -431,14 +419,13 @@ export default function CvPage() {
       {/* ── Styles ── */}
       <style>{`
         .cv-back-link:hover { color: var(--primary) !important; }
-        .cv-download-btn:hover { filter: brightness(1.12); transform: translateY(-1px); }
         .cv-software-card:hover { border-color: var(--primary) !important; box-shadow: 0 2px 12px rgba(15, 118, 110, 0.15); }
         .cv-toc-link:hover { color: var(--primary) !important; background: var(--pill-bg); }
         @media (max-width: 640px) {
           .cv-entry { grid-template-columns: 1fr !important; gap: 0.15rem !important; }
         }
         @media print {
-          .cv-back-link, .cv-download-btn { display: none !important; }
+          .cv-back-link { display: none !important; }
           body { background-image: none !important; background: #fff !important; color: #000 !important; }
           section { break-inside: avoid; }
           a { color: #000 !important; }

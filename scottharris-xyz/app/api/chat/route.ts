@@ -62,7 +62,7 @@ function executeToolCall(name: string, args: Record<string, unknown>): string {
     }
 
     case "get_resume_link":
-      return JSON.stringify({ url: bio.cvUrl, note: "Scott's full academic CV" });
+      return JSON.stringify({ url: bio.cvUrl, note: "Scott's full academic CV page on this site" });
 
     case "get_social_links":
       return JSON.stringify(

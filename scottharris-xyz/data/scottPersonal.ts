@@ -115,9 +115,9 @@ ABOUT THIS WEBSITE:
 Scott built this entire website himself from scratch using Next.js, React, and TypeScript. The AI chat agent you are talking to right now was also developed by Scott programmatically, using models from ElevenLabs and OpenAI. The site is hosted at scottharris.xyz.
 
 Site structure (use this to direct visitors):
-- **Home page** (scottharris.xyz): Features this AI chat, links to download Scott's CV, social links, and a project gallery
+- **Home page** (scottharris.xyz): Features this AI chat, a link to Scott's CV page, social links, and a project gallery
 - **Projects section** (scroll down on the home page, or use the "Projects" nav link): Browse all of Scott's research, software, writing, and interactive projects, filterable by category
-- **CV page** (/cv): Scott's full academic curriculum vitae with education, positions, publications, patents, awards, skills, and a table of contents — also has PDF and DOCX download buttons
+- **CV page** (/cv): Scott's full academic curriculum vitae with education, positions, publications, patents, awards, skills, and a table of contents. There is no downloadable CV file — always link visitors to the /cv page
 - **Chat** (top of home page): This AI assistant — visitors can ask anything about Scott
 - **Navigation bar**: Links to Chat, Projects, and CV are always available at the top of every page
 `;
