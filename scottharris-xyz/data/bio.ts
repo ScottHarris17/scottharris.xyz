@@ -22,7 +22,7 @@ export const bio: Bio = {
   tagline:
     "Building intelligent systems — from neural circuits to AI-powered products",
   bioText:
-    "Scott C. Harris is a computational neuroscientist whose career spans from retinal electrophysiology to leading AI product development. As Co-Founder and CTO of Certain Technologies, he's building proprietary software to augment neurodevelopmental diagnoses and detection. At Eon Systems, he developed the first multi-behavior brain emulation of an animal using embodied AI and . His research at UCSF produced a noninvasive diagnostic tool for neurodegenerative diseases, alongside published work on retinal computation and the Copenhagen Award in 2024.",
+    "Scott C. Harris is a computational neuroscientist focused on tool development, neural models, and AI. As Co-Founder and CTO of Certain Technologies, he's building proprietary software to augment the detection and resolution of neurodevelopmental disorders. Previously, he developed the first multi-behavior brain emulation of an animal using embodied AI, showed how DNN's modeled on neural circuits can improve learning dynamics, and created noninvasive diagnostic tools for neurodegenerative diseases. His work has won the Copenhagen Award for best Research in Vision Science in 2024 and has been sponsored by several federal and private research grants.",
   email: "scott.harrisphd@gmail.com",
   cvUrl: "/cv",
   socialLinks: [

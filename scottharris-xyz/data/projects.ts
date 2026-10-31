@@ -64,8 +64,8 @@ export const projects: Project[] = [
     title: "Jelly Psych",
     category: "software",
     description:
-      "AI-native web app for clinical psychology — psychologists see 60% more patients and clinics grow revenue by >$150k per clinician. Built with Next.js, React, Flask, LLMs, agentic workflows.",
-    url: "#",
+      "AI-native web app for clinical psychology that augments care and improves patient outcomes. Built with Next.js, React, Flask, LLMs, custom models, and agentic workflows.",
+    url: "https://jellypsych.com",
     featured: true,
   },
   {
