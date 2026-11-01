@@ -88,14 +88,14 @@ export const cvData: CVData = {
       title: "Co-Founder & CTO",
       organization: "Certain Technologies, Inc.",
       description:
-        "Building proprietary diagnostic software to augment neurodevelopmental diagnoses.",
+        "Building data-driven methods that augment neurodevelopmental care at scale.",
     },
     {
       period: "2025–present",
       title: "Computational Neuroscientist",
       organization: "Eon Systems, PBC",
       description:
-        "Developed the first multi-behavior brain emulation of an animal using embodied AI. Built physics-constrained, connectome-based brain models that serve as the company's core IP.",
+        "Developed embodied AI models and connectome-derived ANNs that form the company's core IP.",
     },
     {
       period: "2024–2025",
